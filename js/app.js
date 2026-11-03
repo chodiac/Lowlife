@@ -115,10 +115,9 @@ function applyFilter() {
 
 let pvTween;
 function posterHTML(x, i, big = false) {
-  const [pb, pf, tone] = posterColors(i);
-  if (x.photo) return `<div class="poster poster--photo" style="--pb:${pb};--pf:${pf}"><img src="${x.photo}" alt="${esc(x.name)}" loading="lazy"></div>`;
-  return `<div class="poster" style="--pb:${pb};--pf:${pf}">
-    <div class="poster__scene" style="opacity:.28" aria-hidden="true">${scene('lights', i * 13 + 3, tone)}</div>
+  const [pb, pf, pa] = posterColors(i);
+  if (x.photo) return `<div class="poster poster--photo" style="--pb:${pb};--pf:${pf};--pa:${pa}"><img src="${x.photo}" alt="${esc(x.name)}" loading="lazy"></div>`;
+  return `<div class="poster" style="--pb:${pb};--pf:${pf};--pa:${pa}">
     <div class="poster__yr"><span>LOWLIFE ${x.edition}</span><span>${x.day ? dayLabel(x.day).toUpperCase() : ''}</span></div>
     <div class="poster__name">${esc(x.name)}</div>
     <div class="poster__sub">${dayDate(x) || 'Arhiva izdanja ' + x.edition}</div>
@@ -188,9 +187,9 @@ function openArtist(id, opener) {
       <div class="panel__tags"><span class="tag">Izdanje ${x.edition}</span>${x.day ? `<span class="tag">${dayLabel(x.day)}</span>` : ''}${dayDate(x) ? `<span class="tag">${dayDate(x)}</span>` : ''}</div>
       <h2 id="panelName">${esc(x.name)}</h2>
       ${x.bio ? `<p class="lead">${esc(x.bio)}</p>` : `<p class="panel__note">Kratak provereni opis izvođača biće dodat kad ga potvrdimo. Nastup: LOWLIFE ${x.edition}${x.day ? ', ' + dayLabel(x.day).toLowerCase() : ''}.</p>`}
-      ${links.length ? `<div class="panel__links">${links.map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${LAB[k] || esc(k)} ↗</a>`).join('')}</div>` : `<p class="mono" style="opacity:.55">Provereni linkovi ka muzici uskoro</p>`}
+      ${links.length ? `<div class="panel__links">${links.map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${LAB[k] || esc(k)} ↗</a>`).join('')}</div>` : `<p class="mono" style="color:var(--mid)">Provereni linkovi ka muzici uskoro</p>`}
       <button type="button" class="btn btn--ink" id="panelFav" aria-pressed="${favs.has(x.id)}">${favs.has(x.id) ? '★ U mom lineupu' : '☆ Dodaj u Moj lineup'}</button>
-      <p class="mono" style="opacity:.5">Arhiva izdanja ${x.edition}. Ne odnosi se na program ${F.year}.</p>
+      <p class="mono" style="color:var(--mid)">Arhiva izdanja ${x.edition}. Ne odnosi se na program ${F.year}.</p>
     </div>`;
   $('#panelX', panel).addEventListener('click', () => panel.close());
   const fb = $('#panelFav', panel);
