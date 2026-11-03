@@ -115,9 +115,8 @@ function applyFilter() {
 
 let pvTween;
 function posterHTML(x, i, big = false) {
-  const [pb, pf] = posterColors(i);
+  const [pb, pf, tone] = posterColors(i);
   if (x.photo) return `<div class="poster poster--photo" style="--pb:${pb};--pf:${pf}"><img src="${x.photo}" alt="${esc(x.name)}" loading="lazy"></div>`;
-  const tone = pb === '#FF4D24' ? 'orange' : pb === '#DFFF00' ? 'yellow' : pb === '#F2EEE7' ? 'white' : 'ink';
   return `<div class="poster" style="--pb:${pb};--pf:${pf}">
     <div class="poster__scene" style="opacity:.28" aria-hidden="true">${scene('lights', i * 13 + 3, tone)}</div>
     <div class="poster__yr"><span>LOWLIFE ${x.edition}</span><span>${x.day ? dayLabel(x.day).toUpperCase() : ''}</span></div>
@@ -496,7 +495,7 @@ function heroMotion() {
 /* ======================= footer pulse ======================= */
 function footPulse() {
   const foot = $('#footer'), p = $('#footPulse');
-  p.innerHTML = '<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><polygon points="34,0 100,0 100,100 0,100 0,18" fill="none" stroke="#FF4D24" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>';
+  p.innerHTML = '<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><polygon points="34,0 100,0 100,100 0,100 0,18" fill="none" stroke="#705b8f" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>';
   Object.assign(p.style, { clipPath: 'none', background: 'none' });
   let raf = 0, x = 0;
   const move = (cx) => { x = cx; if (!raf) raf = requestAnimationFrame(() => { raf = 0; const r = foot.getBoundingClientRect(); p.style.setProperty('--px', Math.max(0, Math.min(r.width - p.offsetWidth, x - r.left - p.offsetWidth / 2)) + 'px'); foot.classList.add('is-pulse'); }); };

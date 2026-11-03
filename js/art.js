@@ -2,10 +2,10 @@
    until real LOWLIFE photos are added via config.js (`src`). */
 
 const TONES = {
-  orange: { bg: '#FF4D24', bg2: '#C42A0B', beam: '#F2EEE7', ink: '#101010', accent: '#DFFF00' },
-  yellow: { bg: '#DFFF00', bg2: '#A9C400', beam: '#F2EEE7', ink: '#101010', accent: '#FF4D24' },
-  ink:    { bg: '#161616', bg2: '#050505', beam: '#FF4D24', ink: '#000000', accent: '#DFFF00' },
-  white:  { bg: '#F2EEE7', bg2: '#CFC8BB', beam: '#FF4D24', ink: '#101010', accent: '#FF4D24' },
+  orange: { bg: '#705b8f', bg2: '#3c235c', beam: '#c2b8ff', ink: '#050109', accent: '#c2b8ff' },
+  yellow: { bg: '#c2b8ff', bg2: '#705b8f', beam: '#3c235c', ink: '#050109', accent: '#3c235c' },
+  ink:    { bg: '#1a042b', bg2: '#050109', beam: '#705b8f', ink: '#050109', accent: '#c2b8ff' },
+  white:  { bg: '#c2b8ff', bg2: '#8e7fc4', beam: '#3c235c', ink: '#050109', accent: '#3c235c' },
 };
 
 function rng(seed) {
@@ -119,6 +119,6 @@ ${sceneInner(kind, r, c)}
 
 /** Typographic poster used when an artist has no photo. */
 const POSTER = [
-  ['#FF4D24', '#101010'], ['#DFFF00', '#101010'], ['#F2EEE7', '#FF4D24'], ['#101010', '#DFFF00'],
+  ['#3c235c', '#c2b8ff', 'orange'], ['#c2b8ff', '#050109', 'yellow'], ['#705b8f', '#050109', 'white'], ['#1a042b', '#c2b8ff', 'ink'],
 ];
 export function posterColors(i) { return POSTER[i % POSTER.length]; }

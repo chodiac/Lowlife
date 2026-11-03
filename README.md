@@ -22,7 +22,8 @@ Dev flagovi: `?motion=full` (forsira animirani režim), `?motion=reduced` (mirna
 | Aftermovie | `festivalConfig.aftermovie` |
 | Utisci publike | `testimonials[]` (samo odobreni) |
 | Info, FAQ, kanali, partneri | `info[]`, `faq[]`, `socials[]`, `partners[]` |
-| Boje / tipografija | `:root` u `css/style.css` |
+| Boje / tipografija | `:root` u `css/style.css` — paleta #050109 · #1a042b · #3c235c · #705b8f · #c2b8ff |
+| Logo / favicon | `assets/logo.svg` (vektorizovan iz dostavljenog PNG-a), `assets/favicon.svg`, `apple-touch-icon.png` |
 
 ## Šta je ilustrativno
 Nema stvarnih LOWLIFE fotografija u projektu. Svi „kadrovi“ su proceduralne SVG ilustracije (`js/art.js`), označene kao
