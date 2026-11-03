@@ -412,7 +412,8 @@ const collapse = (poly) => poly.replace(/(-?[\d.]+%)\s+(-?[\d.]+%)/g, (m, x) => 
 const FULL = 'polygon(0% 0%,100% 0%,100% 60%,100% 60%,100% 100%,0% 100%,0% 12%,0% 0%)';
 const prep = (els, v) => { els.forEach((e) => (e.style.transform = 'none')); gsap.set(els, v); };
 
-const FORCE = new URLSearchParams(location.search).get('motion'); // dev: ?motion=full | ?motion=reduced
+// Animacije su podrazumevano uključene (i kad OS traži smanjeno kretanje). ?motion=reduced daje mirnu verziju.
+const FORCE = new URLSearchParams(location.search).get('motion') === 'reduced' ? 'reduced' : 'full';
 const Q_ANIM = FORCE === 'full' ? 'all' : FORCE === 'reduced' ? 'not all' : '(prefers-reduced-motion: no-preference)';
 const Q_RM = FORCE === 'full' ? 'not all' : FORCE === 'reduced' ? 'all' : '(prefers-reduced-motion: reduce)';
 

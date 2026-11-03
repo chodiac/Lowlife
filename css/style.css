@@ -474,12 +474,6 @@ dialog::backdrop{background:var(--ink)}
 
 /* reduced motion: mirna ali potpuna verzija */
 .rm .stage__beams i,.rm .marquee__track,.rm .hero__scroll span{animation:none!important}
-@media (prefers-reduced-motion:reduce){
-  *{scroll-behavior:auto!important}
-  .btn,.btn::before,.btn i,.ticket,.gal__item *{transition:none!important}
-  .panel,.lightbox[open]{animation:none}
-  .menu,.menu__links a{transition-duration:.01s}
-}
 
 /* paleta: dim/akcenat po svetlini */
 .gal,.follow{background:var(--deep)}

@@ -5,7 +5,7 @@ Statičan sajt (HTML + CSS + ES moduli, GSAP/ScrollTrigger sa cdnjs). Bez build 
 ```bash
 python tools/serve.py 5230     # http://localhost:5230
 ```
-Dev flagovi: `?motion=full` (forsira animirani režim), `?motion=reduced` (mirna verzija).
+Animacije su uvek uključene (i kad OS traži smanjeno kretanje). `?motion=reduced` daje mirnu verziju bez pina i reveal-a.
 
 ## Gde se šta menja — `js/config.js`
 | Šta | Gde |
