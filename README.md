@@ -22,7 +22,7 @@ Dev flagovi: `?motion=full` (forsira animirani režim), `?motion=reduced` (mirna
 | Aftermovie | `festivalConfig.aftermovie` |
 | Utisci publike | `testimonials[]` (samo odobreni) |
 | Info, FAQ, kanali, partneri | `info[]`, `faq[]`, `socials[]`, `partners[]` |
-| Boje / tipografija | `:root` u `css/style.css` — paleta #050109 · #1a042b · #3c235c · #705b8f · #c2b8ff |
+| Boje / tipografija | `:root` u `css/style.css` — paleta #020008 · #190526 · #5a1b9a · #ff3cf0 · #28f0ff |
 | Logo / favicon | `assets/logo.svg` (vektorizovan iz dostavljenog PNG-a), `assets/favicon.svg`, `apple-touch-icon.png` |
 
 ## Šta je ilustrativno

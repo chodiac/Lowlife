@@ -4,8 +4,8 @@
    okvir slika, urez karte i footer akcenat.
    ========================================================================== */
 :root{
-  /* paleta: #050109 · #1a042b · #3c235c · #705b8f · #c2b8ff */
-  --ink:#050109; --deep:#1a042b; --mid:#3c235c; --mute:#705b8f; --lav:#c2b8ff;
+  /* paleta: #020008 · #190526 · #5a1b9a · #ff3cf0 · #28f0ff */
+  --ink:#020008; --deep:#190526; --mid:#5a1b9a; --mute:#ff3cf0; --lav:#28f0ff;
   --white:var(--lav); --yel:var(--lav); --org:var(--mute); --ink2:var(--deep);
   --display:'Big Shoulders Display','Anton','Impact',sans-serif;
   --sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -497,5 +497,10 @@ dialog::backdrop{background:var(--ink)}
 .foot__base .toplink{color:var(--lav)}
 .gal .note{color:var(--lav)}
 .menu__links i{color:var(--lav)}
-.poster::before{content:"";position:absolute;right:0;bottom:0;width:70%;height:46%;background:var(--pa);clip-path:polygon(34% 0,100% 0,100% 100%,0 100%,0 22%)}
+.poster::before{content:"";position:absolute;right:0;bottom:0;width:50%;height:42%;background:var(--pa);clip-path:polygon(34% 0,100% 0,100% 100%,0 100%,0 22%)}
 .poster--photo::before{display:none}
+
+/* statement: linije kao pune ploče, čitljive preko svakog kadra */
+.statement__title .mask>span{background:var(--ink);color:var(--lav);padding:0 .08em}
+.statement__title .mask:last-child>span{background:var(--mute);color:var(--ink)}
+.statement__title .mask:last-child{color:var(--ink)}
