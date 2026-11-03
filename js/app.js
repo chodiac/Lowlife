@@ -494,7 +494,7 @@ function heroMotion() {
 /* ======================= footer pulse ======================= */
 function footPulse() {
   const foot = $('#footer'), p = $('#footPulse');
-  p.innerHTML = '<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><polygon points="34,0 100,0 100,100 0,100 0,18" fill="none" stroke="#28f0ff" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>';
+  p.innerHTML = '<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><polygon points="34,0 100,0 100,100 0,100 0,18" fill="none" stroke="#00ffd5" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>';
   Object.assign(p.style, { clipPath: 'none', background: 'none' });
   let raf = 0, x = 0;
   const move = (cx) => { x = cx; if (!raf) raf = requestAnimationFrame(() => { raf = 0; const r = foot.getBoundingClientRect(); p.style.setProperty('--px', Math.max(0, Math.min(r.width - p.offsetWidth, x - r.left - p.offsetWidth / 2)) + 'px'); foot.classList.add('is-pulse'); }); };

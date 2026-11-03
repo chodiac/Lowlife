@@ -4,9 +4,9 @@
    okvir slika, urez karte i footer akcenat.
    ========================================================================== */
 :root{
-  /* paleta: #020008 · #190526 · #5a1b9a · #28f0ff · #ff3cf0 */
-  --ink:#020008; --deep:#190526; --mid:#5a1b9a; --mute:#28f0ff; --lav:#ff3cf0;
-  --white:var(--lav); --yel:var(--lav); --org:var(--mute); --ink2:var(--deep);
+  /* paleta: #04010a · #1f0933 · #7c2cff · #00ffd5 · #f5f5ff */
+  --ink:#04010a; --deep:#1f0933; --mid:#7c2cff; --mute:#00ffd5; --lav:#f5f5ff;
+  --white:var(--lav); --yel:var(--mute); --org:var(--mid); --ink2:var(--deep);
   --display:'Big Shoulders Display','Anton','Impact',sans-serif;
   --sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
   --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
@@ -138,8 +138,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .hero__party{font:900 clamp(20px,2.6vw,40px)/1 var(--display);letter-spacing:.42em;text-transform:uppercase;margin-right:-.42em}
 .hero__mid{grid-area:mid;align-self:center;max-width:48%;padding:2vh 0}
 .hero__slogan{font-size:clamp(70px,11.5vw,230px);line-height:.82;display:flex;flex-direction:column;align-items:flex-start;text-shadow:none}
-.hero__slogan .mask:first-child{color:var(--mute)}
-.hero__slogan .mask:last-child{color:var(--lav)}
+.hero__slogan .mask:last-child{color:var(--mute)}
 .hero__lead{font-size:clamp(17px,1.6vw,24px);max-width:21em;margin:22px 0 28px;}
 .hero__cta{display:flex;flex-wrap:wrap;gap:12px}
 .hero__title{grid-area:title;line-height:.72;white-space:nowrap;overflow:hidden;font-size:clamp(100px,27vw,560px);padding-top:.04em}
@@ -154,7 +153,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .statement__bg{position:absolute;inset:0;z-index:-1;}
 .statement__kick{margin-bottom:16px;}
 .statement__title{font-size:clamp(76px,19vw,360px);line-height:.8;display:flex;flex-direction:column;align-items:flex-start}
-.statement__title .mask:last-child{color:var(--lav)}
+.statement__title .mask:last-child{color:var(--mute)}
 
 /* animirani režim (JS dodaje .is-anim) */
 .stage.is-anim{height:100svh;overflow:hidden}
@@ -221,7 +220,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* ---------- ARHIVA ---------- */
 .archive__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px}
-.archive .yr{color:var(--lav)}
+.archive .yr{color:var(--mute)}
 .archive__note{max-width:24em;font-size:15px;}
 .archive__note a{color:var(--yel)}
 .archive__bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin:clamp(30px,4vw,60px) 0 10px}
@@ -483,12 +482,10 @@ dialog::backdrop{background:var(--ink)}
 }
 
 /* paleta: dim/akcenat po svetlini */
-.archive .giant,.after .giant,.follow .h-xl{color:var(--mute)}
-.archive .giant .y,.after .giant .y,.follow .h-xl .y{color:var(--lav)}
 .gal,.follow{background:var(--deep)}
 .after{background:var(--ink)}
 .gal .h-xl{color:var(--lav)}
-.foot__big .y{color:var(--lav)}
+.foot__big .y{color:var(--mute)}
 .mark--lg{display:block;width:44px;height:66px;margin-bottom:18px;color:var(--lav)}
 
 /* tekst koji je ranije bio providan: sada tačne boje palete */
@@ -500,7 +497,3 @@ dialog::backdrop{background:var(--ink)}
 .poster::before{content:"";position:absolute;right:0;bottom:0;width:50%;height:42%;background:var(--pa);clip-path:polygon(34% 0,100% 0,100% 100%,0 100%,0 22%)}
 .poster--photo::before{display:none}
 
-/* statement: linije kao pune ploče, čitljive preko svakog kadra */
-.statement__title .mask>span{background:var(--ink);color:var(--lav);padding:0 .08em}
-.statement__title .mask:last-child>span{background:var(--mute);color:var(--ink)}
-.statement__title .mask:last-child{color:var(--ink)}

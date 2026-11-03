@@ -3,10 +3,10 @@
 
 /* Samo tačne boje palete, bez providnosti i gradijenata. */
 const TONES = {
-  orange: { bg: '#28f0ff', band: '#5a1b9a', beam: '#5a1b9a', beam2: '#190526', glow: '#5a1b9a', ink: '#020008', dots: '#5a1b9a' },
-  yellow: { bg: '#ff3cf0', band: '#28f0ff', beam: '#28f0ff', beam2: '#5a1b9a', glow: '#28f0ff', ink: '#020008', dots: '#28f0ff' },
-  ink:    { bg: '#190526', band: '#020008', beam: '#5a1b9a', beam2: '#28f0ff', glow: '#5a1b9a', ink: '#020008', dots: '#5a1b9a' },
-  white:  { bg: '#ff3cf0', band: '#28f0ff', beam: '#5a1b9a', beam2: '#28f0ff', glow: '#28f0ff', ink: '#020008', dots: '#28f0ff' },
+  orange: { bg: '#7c2cff', band: '#1f0933', beam: '#1f0933', beam2: '#04010a', glow: '#1f0933', ink: '#04010a', dots: '#1f0933' },
+  yellow: { bg: '#f5f5ff', band: '#7c2cff', beam: '#7c2cff', beam2: '#00ffd5', glow: '#7c2cff', ink: '#04010a', dots: '#7c2cff' },
+  ink:    { bg: '#1f0933', band: '#04010a', beam: '#7c2cff', beam2: '#00ffd5', glow: '#7c2cff', ink: '#04010a', dots: '#7c2cff' },
+  white:  { bg: '#00ffd5', band: '#7c2cff', beam: '#7c2cff', beam2: '#1f0933', glow: '#f5f5ff', ink: '#04010a', dots: '#1f0933' },
 };
 
 function rng(seed) {
@@ -114,6 +114,6 @@ ${sceneInner(kind, r, c)}
 
 /** Typographic poster used when an artist has no photo. */
 const POSTER = [
-  ['#5a1b9a', '#ff3cf0', '#28f0ff'], ['#ff3cf0', '#020008', '#28f0ff'], ['#28f0ff', '#020008', '#5a1b9a'], ['#190526', '#ff3cf0', '#5a1b9a'],
+  ['#7c2cff', '#f5f5ff', '#1f0933'], ['#f5f5ff', '#04010a', '#00ffd5'], ['#00ffd5', '#04010a', '#f5f5ff'], ['#1f0933', '#f5f5ff', '#7c2cff'],
 ];
 export function posterColors(i) { return POSTER[i % POSTER.length]; }
