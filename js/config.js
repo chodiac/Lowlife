@@ -89,7 +89,7 @@ const a = (name, day, extra = {}) => ({
 
 export const artists = [
   // — Prvi dan (15. avgust 2025.)
-  a('Rie', 1), a('Nina Todorović', 1), a('Biba', 1), a('Napoleon', 1),
+  a('Rie', 1), a('Nina Todorović', 1), a('Biba', 1, { photo: 'assets/photos/stage-green.webp' }), a('Napoleon', 1),
   a('Corona', 1), a('Rimski', 1), a('100K', 1), a('Arafat', 1),
   a('Faberge', 1), a('Kza', 1), a('Vekac', 1), a('Surreal', 1), a('Tasha', 1),
   // — Drugi dan (16. avgust 2025.)
@@ -106,21 +106,31 @@ export const artists = [
 export const schedule = [];
 
 /* --------------------------------------------------------------------------
-   gallery — svaki fajl ima godinu. year:null = ilustrativni demo kadar.
-   Kad stignu prave fotografije: stavi src ('assets/g/2025-01.jpg'),
-   w/h (za stabilan odnos stranica), alt, credit, illustrative:false.
+   photos — registar autentičnih fotografija (assets/photos/*.webp, + -640 varijanta).
+   year / credit: null dok se ne potvrde (ne izmišljamo). Ključ se koristi u HTML-u
+   (data-photo="crowd") i u galeriji.
    -------------------------------------------------------------------------- */
-export const gallery = [
-  { id: 'g1', scene: 'crowd',  seed: 11, tone: 'orange', ratio: '4/5', span: 'tall',  cat: 'Publika',   alt: 'Ilustracija: publika ispred bine, podignute ruke u svetlu reflektora', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g2', scene: 'stage',  seed: 23, tone: 'yellow', ratio: '16/10', span: 'wide', cat: 'Bina',      alt: 'Ilustracija: bina i snopovi svetla', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g3', scene: 'lights', seed: 31, tone: 'ink',    ratio: '1/1',  span: '',      cat: 'Svetla',    alt: 'Ilustracija: reflektori u dimu', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g4', scene: 'crowd',  seed: 47, tone: 'white',  ratio: '3/4',  span: '',      cat: 'Publika',   alt: 'Ilustracija: silueta publike u kontra svetlu', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g5', scene: 'arch',   seed: 5,  tone: 'orange', ratio: '4/5',  span: '',      cat: 'Prostor',   alt: 'Ilustracija: svodovi i kapija prostora noću', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g6', scene: 'stage',  seed: 61, tone: 'ink',    ratio: '16/10', span: 'wide', cat: 'Bina',      alt: 'Ilustracija: bina u crvenom svetlu', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g7', scene: 'crowd',  seed: 73, tone: 'yellow', ratio: '1/1',  span: '',      cat: 'Ekipa',     alt: 'Ilustracija: ekipa u gomili', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g8', scene: 'lights', seed: 89, tone: 'orange', ratio: '3/4',  span: 'tall',  cat: 'Svetla',    alt: 'Ilustracija: svetlosni snopovi', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g9', scene: 'arch',   seed: 97, tone: 'white',  ratio: '16/10', span: 'wide', cat: 'Prostor',   alt: 'Ilustracija: arhitektura prostora u kontrastu', year: null, src: null, credit: null, illustrative: true },
-];
+const P = (id, w, h, alt, extra = {}) => ({
+  id, src: `assets/photos/${id}.webp`, srcset: `assets/photos/${id}-640.webp 640w, assets/photos/${id}.webp ${w}w`,
+  w, h, alt, year: null, credit: null, ...extra,
+});
+export const photos = {
+  'stage-green': P('stage-green', 1252, 774, 'Bina osvetljena zelenim LED ekranima sa LOWLIFE znakom i izvođačima ispod'),
+  'stage-crowd': P('stage-crowd', 1221, 729, 'Publika ispred bine sa crvenim svetlosnim okvirima i LOWLIFE znakom na ekranu'),
+  crowd:         P('crowd', 1234, 634, 'Publika uz ogradu, podignute ruke i telefoni, uzvikuju refren'),
+  'stage-red':   P('stage-red', 1232, 590, 'Bina sa crvenim video ekranima i LOWLIFE znakom'),
+  phones:        P('phones', 908, 1248, 'Izvođač uz ogradu i publika koja snima telefonima'),
+  performer:     P('performer', 935, 1252, 'Izvođačica sa mikrofonom na bini, u plavom i narandžastom svetlu'),
+};
+
+/* --------------------------------------------------------------------------
+   gallery — fotografije iz photos. cat: kategorija, year: null dok se ne potvrdi.
+   Dodaj nove fotografije u photos{} i ovde (redosled određuje raspored).
+   -------------------------------------------------------------------------- */
+export const gallery = ['crowd', 'performer', 'stage-green', 'phones', 'stage-crowd', 'stage-red'].map((k) => ({
+  ...photos[k], cat: { crowd: 'Publika', performer: 'Izvođači', 'stage-green': 'Bina', phones: 'Ekipa', 'stage-crowd': 'Bina i publika', 'stage-red': 'Svetla' }[k],
+  illustrative: false,
+}));
 
 /* --------------------------------------------------------------------------
    tickets — SAMO potvrđene opcije. Prazno = „Sledeća runda stiže.“
