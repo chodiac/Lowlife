@@ -25,6 +25,9 @@ Dev flagovi: `?motion=full` (forsira animirani režim), `?motion=reduced` (mirna
 | Boje / tipografija | `:root` u `css/style.css` — paleta #04010a · #1f0933 · #7c2cff · #00ffd5 · #f5f5ff |
 | Logo / favicon | `assets/logo.svg` (vektorizovan iz dostavljenog PNG-a), `assets/favicon.svg`, `apple-touch-icon.png` |
 
+## Fotografije izvođača
+`assets/artists/<id>.webp` (640×800, 4:5) + `<id>-320.webp`, svi isti duotone u paleti sajta (crna → violet → bela). Registar je `PHOTOS` u `config.js`. Originali su u `assets/_originals/` (nisu u repou). Rie i Napoleon su niske rezolucije, pa su malo zrnasti; zameniti većim fajlovima ako postoje.
+
 ## Šta je ilustrativno
 Nema stvarnih LOWLIFE fotografija u projektu. Svi „kadrovi“ su proceduralne SVG ilustracije (`js/art.js`), označene kao
 ilustrativne. Zamenjuju se postavljanjem `src` u `gallery[]` i `photo` kod izvođača.

@@ -94,7 +94,7 @@ function renderList() {
       <span class="alist__name">${esc(x.name)}</span>
       <span class="alist__meta"><span class="tag tag--y">${x.edition}</span>${x.day ? `<span class="tag">${dayLabel(x.day)}</span>` : ''}${s ? `<span class="tag">${esc(s.start)}</span>` : ''}</span>
       <span class="alist__fav" aria-hidden="true">${favs.has(x.id) ? '★' : ''}</span>
-      <span class="alist__thumb" style="--pb:${pb};--pf:${pf}" aria-hidden="true"><span>${esc(x.name[0])}</span></span>
+      <span class="alist__thumb" style="--pb:${pb};--pf:${pf}" aria-hidden="true">${x.photoSm ? `<img src="${x.photoSm}" alt="" width="62" height="78" loading="lazy" decoding="async">` : `<span>${esc(x.name[0])}</span>`}</span>
     </button></li>`;
   }).join('');
 }
@@ -116,7 +116,8 @@ function applyFilter() {
 let pvTween;
 function posterHTML(x, i, big = false) {
   const [pb, pf, pa] = posterColors(i);
-  if (x.photo) return `<div class="poster poster--photo" style="--pb:${pb};--pf:${pf};--pa:${pa}"><img src="${x.photo}" alt="${esc(x.name)}" loading="lazy"></div>`;
+  if (x.photo) return `<div class="poster poster--photo" style="--pb:${pb};--pf:${pf};--pa:${pa}"><img src="${x.photo}" srcset="${x.photoSm || x.photo} 320w, ${x.photo} 640w" sizes="(max-width:1000px) 100vw, 34vw" width="640" height="800" alt="${esc(x.name)}" loading="lazy" decoding="async">
+    <div class="poster__tag"><span class="poster__tn">${esc(x.name)}</span><span class="poster__ty">LOWLIFE ${x.edition}${x.day ? ' · ' + dayLabel(x.day).toUpperCase() : ''}</span></div></div>`;
   return `<div class="poster" style="--pb:${pb};--pf:${pf};--pa:${pa}">
     <div class="poster__yr"><span>LOWLIFE ${x.edition}</span><span>${x.day ? dayLabel(x.day).toUpperCase() : ''}</span></div>
     <div class="poster__name">${esc(x.name)}</div>

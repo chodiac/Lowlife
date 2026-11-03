@@ -81,11 +81,19 @@ export const editions = [
    Izvor za 2025: Respublica 034 (vidi editions[0].source).
    „confirmed“ + edition 2027 se automatski prikazuje u bloku „Lineup 2027“.
    -------------------------------------------------------------------------- */
-const a = (name, day, extra = {}) => ({
-  id: name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'dj').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-  name, edition: 2025, status: 'archive', day,
-  photo: null, bio: null, links: {}, ...extra,
-});
+/* Fotografije izvođača: assets/artists/<id>.webp (640x800, 4:5, duotone u paleti) + <id>-320.webp.
+   Kad stigne nova fotografija, dodaj <id> u ovaj spisak. Nedostajuća fotografija = tipografski poster. */
+const PHOTOS = new Set(['arafat', 'biba', 'corona', 'elena-kitic', 'fox', 'mimi-mercedez', 'napoleon', 'rie', 'rimski', 'rouzi', 'surreal', 'tng', 'vekac']);
+const slug = (n) => n.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'dj').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const a = (name, day, extra = {}) => {
+  const id = slug(name);
+  return {
+    id, name, edition: 2025, status: 'archive', day,
+    photo: PHOTOS.has(id) ? `assets/artists/${id}.webp` : null,
+    photoSm: PHOTOS.has(id) ? `assets/artists/${id}-320.webp` : null,
+    bio: null, links: {}, ...extra,
+  };
+};
 
 export const artists = [
   // — Prvi dan (15. avgust 2025.)
