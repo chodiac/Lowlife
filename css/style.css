@@ -4,8 +4,8 @@
    okvir slika, urez karte i footer akcenat.
    ========================================================================== */
 :root{
-  /* paleta: #020008 · #190526 · #5a1b9a · #ff3cf0 · #28f0ff */
-  --ink:#020008; --deep:#190526; --mid:#5a1b9a; --mute:#ff3cf0; --lav:#28f0ff;
+  /* paleta: #020008 · #190526 · #5a1b9a · #28f0ff · #ff3cf0 */
+  --ink:#020008; --deep:#190526; --mid:#5a1b9a; --mute:#28f0ff; --lav:#ff3cf0;
   --white:var(--lav); --yel:var(--lav); --org:var(--mute); --ink2:var(--deep);
   --display:'Big Shoulders Display','Anton','Impact',sans-serif;
   --sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
