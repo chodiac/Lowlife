@@ -25,10 +25,6 @@ Dev flagovi: `?motion=full` (forsira animirani režim), `?motion=reduced` (mirna
 | Boje / tipografija | `:root` u `css/style.css` — paleta #04010a · #1f0933 · #7c2cff · #00ffd5 · #f5f5ff |
 | Logo / favicon | `assets/logo.svg` (vektorizovan iz dostavljenog PNG-a), `assets/favicon.svg`, `apple-touch-icon.png` |
 
-## Fotografije
-Autentične fotografije su u `assets/photos/` (webp + `-640` varijanta) i registrovane u `config.js → photos`. Godina i autor su `null` dok se ne potvrde (`year`, `credit`). Biba ima kadar sa bine na kojem piše njeno ime (`artist.photo`).
-Ilustrativne SVG scene (`js/art.js`) ostaju samo kao rezervna varijanta kad fotografija nedostaje.
-
 ## Šta je ilustrativno
 Nema stvarnih LOWLIFE fotografija u projektu. Svi „kadrovi“ su proceduralne SVG ilustracije (`js/art.js`), označene kao
 ilustrativne. Zamenjuju se postavljanjem `src` u `gallery[]` i `photo` kod izvođača.

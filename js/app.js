@@ -21,19 +21,7 @@ const archive = artists.filter((x) => x.status === 'archive');
 const confirmed27 = artists.filter((x) => x.status === 'confirmed' && x.edition === F.year);
 
 /* ======================= scenes ======================= */
-function photoImg(p, { eager = false, pos = '50% 50%', sizes = '100vw' } = {}) {
-  return `<img class="photo" src="${p.src}" srcset="${p.srcset}" sizes="${sizes}" width="${p.w}" height="${p.h}" alt="" style="object-position:${pos}"
-    ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
-}
 function paintScenes(scope = document) {
-  $$('[data-photo]', scope).forEach((el) => {
-    if (el.dataset.painted) return;
-    const p = C.photos[el.dataset.photo];
-    if (!p) { el.dataset.scene ||= 'crowd'; return; }   // nema fotografije -> ilustrativni fallback
-    el.dataset.painted = '1';
-    el.insertAdjacentHTML('afterbegin', photoImg(p, { eager: 'eager' in el.dataset, pos: el.dataset.pos, sizes: el.dataset.sizes }));
-    el.setAttribute('role', 'img'); el.setAttribute('aria-label', p.alt);
-  });
   $$('[data-scene]', scope).forEach((el) => {
     if (el.dataset.painted) return;
     el.dataset.painted = '1';
@@ -221,7 +209,7 @@ function openArtist(id, opener) {
 const G = C.gallery;
 function renderGallery() {
   $('#galGrid').innerHTML = G.map((g, i) => `<li><button type="button" class="gal__item" data-i="${i}" data-cap="${esc(g.cat)}${g.year ? ' · ' + g.year : ''}" aria-label="Otvori: ${esc(g.alt)}" aria-haspopup="dialog">
-    ${g.src ? `<img src="${g.src}" srcset="${g.srcset || ''}" sizes="(max-width:1000px) 50vw, 40vw" alt="" loading="lazy" decoding="async" width="${g.w || ''}" height="${g.h || ''}">` : `<div data-scene="${g.scene}" data-seed="${g.seed}" data-tone="${g.tone}" data-par></div>`}
+    ${g.src ? `<img src="${g.src}" alt="" loading="lazy" decoding="async" width="${g.w || ''}" height="${g.h || ''}">` : `<div data-scene="${g.scene}" data-seed="${g.seed}" data-tone="${g.tone}" data-par></div>`}
     ${g.illustrative ? '<span class="ill">ILUSTRATIVNO</span>' : ''}
   </button></li>`).join('');
   paintScenes($('#galGrid'));
@@ -230,8 +218,8 @@ const lb = $('#lightbox'); let lbI = 0, lbOpener = null;
 function lbShow(i) {
   lbI = (i + G.length) % G.length;
   const g = G[lbI];
-  const [a, b] = g.ratio ? g.ratio.split('/').map(Number) : [g.w, g.h];
-  $('#lbFig').innerHTML = `<div class="box" style="--r:${a / b}">${g.src ? `<img src="${g.src}" srcset="${g.srcset || ''}" sizes="94vw" alt="${esc(g.alt)}">` : scene(g.scene, g.seed, g.tone)}</div>
+  const [a, b] = g.ratio.split('/').map(Number);
+  $('#lbFig').innerHTML = `<div class="box" style="--r:${a / b}">${g.src ? `<img src="${g.src}" alt="${esc(g.alt)}">` : scene(g.scene, g.seed, g.tone)}</div>
     <figcaption>${esc(g.cat)}${g.year ? ' · ' + g.year : ''}${g.illustrative ? ' · ilustrativni kadar' : ''}${g.credit ? ' · foto: ' + esc(g.credit) : ''}</figcaption>`;
   if (!g.src) $('#lbFig').setAttribute('role', 'img'), $('#lbFig').setAttribute('aria-label', g.alt);
   $('#lbCount').textContent = `${String(lbI + 1).padStart(2, '0')} / ${String(G.length).padStart(2, '0')}`;
