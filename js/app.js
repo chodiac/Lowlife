@@ -21,7 +21,18 @@ const archive = artists.filter((x) => x.status === 'archive');
 const confirmed27 = artists.filter((x) => x.status === 'confirmed' && x.edition === F.year);
 
 /* ======================= scenes ======================= */
+function photoImg(p, { pos = '50% 50%', sizes = '100vw' } = {}) {
+  return `<img class="photo" src="${p.src}" srcset="${p.srcset}" sizes="${sizes}" width="${p.w}" height="${p.h}" alt="" style="object-position:${pos}" loading="lazy" decoding="async">`;
+}
 function paintScenes(scope = document) {
+  $$('[data-photo]', scope).forEach((el) => {
+    if (el.dataset.painted) return;
+    const p = C.photos[el.dataset.photo];
+    if (!p) { el.dataset.scene ||= 'crowd'; return; }   // nema fotografije -> ilustrativni fallback
+    el.dataset.painted = '1';
+    el.insertAdjacentHTML('afterbegin', photoImg(p, { pos: el.dataset.pos, sizes: el.dataset.sizes }));
+    el.setAttribute('role', 'img'); el.setAttribute('aria-label', p.alt);
+  });
   $$('[data-scene]', scope).forEach((el) => {
     if (el.dataset.painted) return;
     el.dataset.painted = '1';
@@ -207,28 +218,42 @@ function openArtist(id, opener) {
 }
 
 /* ======================= gallery + lightbox ======================= */
-const G = C.gallery;
+const GALL = C.gallery;
+let G = GALL.slice();            // trenutno vidljive (po filteru)
+const galGrid = $('#galGrid');
 function renderGallery() {
-  $('#galGrid').innerHTML = G.map((g, i) => `<li><button type="button" class="gal__item" data-i="${i}" data-cap="${esc(g.cat)}${g.year ? ' · ' + g.year : ''}" aria-label="Otvori: ${esc(g.alt)}" aria-haspopup="dialog">
-    ${g.src ? `<img src="${g.src}" alt="" loading="lazy" decoding="async" width="${g.w || ''}" height="${g.h || ''}">` : `<div data-scene="${g.scene}" data-seed="${g.seed}" data-tone="${g.tone}" data-par></div>`}
+  galGrid.innerHTML = GALL.map((g) => `<li data-id="${g.id}" data-cat="${esc(g.cat)}"><button type="button" class="gal__item" style="--ar:${g.w}/${g.h}" data-id="${g.id}" data-cap="${esc(g.cat)}${g.year ? ' · ' + g.year : ''}" aria-label="Otvori fotografiju: ${esc(g.alt)}" aria-haspopup="dialog">
+    <img src="${g.src}" srcset="${g.srcset}" sizes="(max-width:1000px) 50vw, 33vw" alt="" loading="lazy" decoding="async" width="${g.w}" height="${g.h}">
     ${g.illustrative ? '<span class="ill">ILUSTRATIVNO</span>' : ''}
   </button></li>`).join('');
-  paintScenes($('#galGrid'));
+  // filter po kategorijama: samo kad ima dovoljno stvarnog sadržaja
+  const cats = [...new Set(GALL.map((g) => g.cat))].filter((k) => GALL.filter((g) => g.cat === k).length >= 2);
+  const bar = $('#galFilter');
+  if (cats.length >= 2) {
+    bar.hidden = false;
+    bar.innerHTML = ['Sve', ...cats].map((k, i) => `<button type="button" class="seg__b${i ? '' : ' is-on'}" data-cat="${i ? esc(k) : ''}" aria-pressed="${i ? 'false' : 'true'}">${esc(k)} <b>${i ? GALL.filter((g) => g.cat === k).length : GALL.length}</b></button>`).join('');
+    bar.addEventListener('click', (e) => {
+      const b = e.target.closest('.seg__b'); if (!b) return;
+      const cat = b.dataset.cat;
+      $$('.seg__b', bar).forEach((n) => { n.classList.toggle('is-on', n === b); n.setAttribute('aria-pressed', n === b); });
+      $$('li', galGrid).forEach((li) => (li.hidden = !!cat && li.dataset.cat !== cat));
+      G = GALL.filter((g) => !cat || g.cat === cat);
+      ScrollTrigger?.refresh?.();
+    });
+  }
 }
 const lb = $('#lightbox'); let lbI = 0, lbOpener = null;
 function lbShow(i) {
   lbI = (i + G.length) % G.length;
   const g = G[lbI];
-  const [a, b] = g.ratio.split('/').map(Number);
-  $('#lbFig').innerHTML = `<div class="box" style="--r:${a / b}">${g.src ? `<img src="${g.src}" alt="${esc(g.alt)}">` : scene(g.scene, g.seed, g.tone)}</div>
-    <figcaption>${esc(g.cat)}${g.year ? ' · ' + g.year : ''}${g.illustrative ? ' · ilustrativni kadar' : ''}${g.credit ? ' · foto: ' + esc(g.credit) : ''}</figcaption>`;
-  if (!g.src) $('#lbFig').setAttribute('role', 'img'), $('#lbFig').setAttribute('aria-label', g.alt);
+  $('#lbFig').innerHTML = `<div class="box" style="--r:${g.w / g.h}"><img src="${g.src}" srcset="${g.srcset}" sizes="94vw" alt="${esc(g.alt)}"></div>
+    <figcaption>${esc(g.cat)}${g.year ? ' · ' + g.year : ''}${g.credit ? ' · foto: ' + esc(g.credit) : ''}</figcaption>`;
   $('#lbCount').textContent = `${String(lbI + 1).padStart(2, '0')} / ${String(G.length).padStart(2, '0')}`;
 }
 function bindLightbox() {
-  $('#galGrid').addEventListener('click', (e) => {
+  galGrid.addEventListener('click', (e) => {
     const b = e.target.closest('.gal__item'); if (!b) return;
-    lbOpener = b; lbShow(+b.dataset.i); lockScroll(true); lb.showModal();
+    lbOpener = b; lbShow(Math.max(0, G.findIndex((g) => g.id === b.dataset.id))); lockScroll(true); lb.showModal();
   });
   bindDialog(lb, () => lbOpener?.focus?.({ preventScroll: true }));
   $('#lbClose').addEventListener('click', () => lb.close());
@@ -248,6 +273,17 @@ function bindLightbox() {
   lb.addEventListener('pointercancel', () => { sx = null; });
 }
 
+/* ======================= video prozor (sa zvukom) ======================= */
+const vm = $('#videoModal'), vmV = $('#vmVideo'); let vmOpener = null;
+function bindVideoModal() {
+  bindDialog(vm, () => { vmV.pause(); vmV.removeAttribute('src'); vmV.load(); vmOpener?.focus?.({ preventScroll: true }); });
+  $('#vmClose').addEventListener('click', () => vm.close());
+}
+function openVideo(src, poster, opener) {
+  vmOpener = opener; vmV.src = src; vmV.poster = poster || ''; vmV.muted = false;
+  lockScroll(true); vm.showModal(); vmV.play().catch(() => {});
+}
+
 /* ======================= aftermovie ======================= */
 function renderAftermovie() {
   const m = F.aftermovie, act = $('#afterAction');
@@ -257,14 +293,43 @@ function renderAftermovie() {
     $('#afterLead').textContent = 'Pusti zvuk samo ako želiš — video se pokreće tek na klik.';
     if (m.poster) $('.after__bg').innerHTML = `<img src="${m.poster}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`;
     act.innerHTML = `<button class="play" type="button" id="playBtn"><span class="play__ic"></span>Pusti aftermovie</button>`;
-    const vm = $('#videoModal'), v = $('#vmVideo');
-    const stop = () => { v.pause(); v.removeAttribute('src'); v.load(); };
-    bindDialog(vm, () => { stop(); $('#playBtn').focus({ preventScroll: true }); });
-    $('#playBtn').addEventListener('click', () => { v.src = m.src; if (m.poster) v.poster = m.poster; lockScroll(true); vm.showModal(); v.play().catch(() => {}); });
-    $('#vmClose').addEventListener('click', () => vm.close());
+    $('#playBtn').addEventListener('click', (e) => openVideo(m.src, m.poster, e.currentTarget));
   } else {
-    act.innerHTML = `<span class="mono note-pill">Aftermovie: uskoro</span> <a class="btn btn--lg btn--ghost" href="#galerija" style="margin-left:8px">Pogledaj galeriju <i aria-hidden="true">↓</i></a>`;
+    act.innerHTML = `<span class="mono note-pill">Aftermovie: uskoro</span> <a class="btn btn--lg btn--ghost" href="#klipovi" style="margin-left:8px">Pogledaj klipove <i aria-hidden="true">↓</i></a>`;
   }
+}
+
+/* ======================= klipovi (vertikalna traka) ======================= */
+function renderClips() {
+  const track = $('#clipsTrack'); if (!track || !C.clips.length) { $('#klipovi')?.setAttribute('hidden', ''); return; }
+  track.innerHTML = C.clips.map((c, i) => `<li class="clip"><button type="button" class="clip__btn" data-i="${i}" aria-haspopup="dialog" aria-label="Pusti klip „${esc(c.title)}“ sa zvukom">
+    <video muted loop playsinline preload="none" poster="${c.poster}" data-src="${c.src}" width="${c.w}" height="${c.h}" aria-hidden="true" tabindex="-1"></video>
+    <span class="clip__tag"><b>${esc(c.title)}</b><i>▶ Sa zvukom</i></span></button></li>`).join('');
+  track.addEventListener('click', (e) => {
+    const b = e.target.closest('.clip__btn'); if (!b) return;
+    const c = C.clips[+b.dataset.i]; openVideo(c.src, c.poster, b);
+  });
+  // vrti se samo ono što je na ekranu (i dok je tab vidljiv)
+  const vis = new Set();
+  const play = (v) => { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); };
+  const io = new IntersectionObserver((es) => es.forEach((en) => {
+    const v = en.target;
+    if (en.isIntersecting) { vis.add(v); if (!document.hidden) play(v); } else { vis.delete(v); v.pause(); }
+  }), { threshold: 0.5 });
+  $$('video', track).forEach((v) => io.observe(v));
+  document.addEventListener('visibilitychange', () => { document.hidden ? $$('video', track).forEach((v) => v.pause()) : vis.forEach(play); });
+  // dugmad + prevlačenje mišem
+  const step = () => (track.querySelector('.clip')?.getBoundingClientRect().width || 300) + 16;
+  const prev = $('#clipsPrev'), next = $('#clipsNext');
+  const sync = () => { prev.disabled = track.scrollLeft < 8; next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8; };
+  prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+  next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+  track.addEventListener('scroll', sync, { passive: true }); addEventListener('resize', sync); sync();
+  let down = null, moved = false;
+  track.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; down = { x: e.clientX, l: track.scrollLeft }; moved = false; });
+  addEventListener('pointermove', (e) => { if (!down) return; const dx = e.clientX - down.x; if (Math.abs(dx) > 5) { moved = true; track.classList.add('is-drag'); } track.scrollLeft = down.l - dx; });
+  addEventListener('pointerup', () => { down = null; track.classList.remove('is-drag'); });
+  track.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
 }
 
 /* ======================= utisci ======================= */
@@ -485,7 +550,7 @@ function heroMotion() {
         const v = +el.dataset.parallax;
         gsap.fromTo(el, { y: -v }, { y: v, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
       });
-      $$('.gal__item [data-scene], .gal__item img').forEach((el) => {
+      $$('.gal__item img').forEach((el) => {
         gsap.fromTo(el, { yPercent: -2.5 }, { yPercent: 2.5, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
       });
     }
@@ -532,7 +597,7 @@ function init() {
   applyState();
   renderEditions(); renderLineup27();
   renderList(); bindList(); applyFilter();
-  renderGallery(); bindLightbox();
+  renderGallery(); bindLightbox(); bindVideoModal(); renderClips();
   renderAftermovie(); renderUtisci(); renderTickets(); renderMisc();
   paintScenes();
   if (archive.length) setPreview(archive[0].id); else $('#arhiva').hidden = true;

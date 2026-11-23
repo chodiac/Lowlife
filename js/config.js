@@ -114,20 +114,41 @@ export const artists = [
 export const schedule = [];
 
 /* --------------------------------------------------------------------------
-   gallery — svaki fajl ima godinu. year:null = ilustrativni demo kadar.
-   Kad stignu prave fotografije: stavi src ('assets/g/2025-01.jpg'),
-   w/h (za stabilan odnos stranica), alt, credit, illustrative:false.
+   gallery — autentične fotografije iz assets/photos/ (<id>.webp + <id>-sm.webp).
+   year / credit su null dok se ne potvrde (ne izmišljamo). cat = kategorija filtera;
+   filter se prikazuje samo kad postoje bar 2 kategorije sa bar 2 fotografije.
+   Nova fotografija: dodaj fajlove u assets/photos/ i jedan red ovde.
    -------------------------------------------------------------------------- */
+const P = (id, w, h, sw, cat, alt, extra = {}) => ({
+  id, src: `assets/photos/${id}.webp`, srcset: `assets/photos/${id}-sm.webp ${sw}w, assets/photos/${id}.webp ${w}w`,
+  w, h, cat, alt, year: null, credit: null, illustrative: false, ...extra,
+});
 export const gallery = [
-  { id: 'g1', scene: 'crowd',  seed: 11, tone: 'orange', ratio: '4/5', span: 'tall',  cat: 'Publika',   alt: 'Ilustracija: publika ispred bine, podignute ruke u svetlu reflektora', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g2', scene: 'stage',  seed: 23, tone: 'yellow', ratio: '16/10', span: 'wide', cat: 'Bina',      alt: 'Ilustracija: bina i snopovi svetla', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g3', scene: 'lights', seed: 31, tone: 'ink',    ratio: '1/1',  span: '',      cat: 'Svetla',    alt: 'Ilustracija: reflektori u dimu', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g4', scene: 'crowd',  seed: 47, tone: 'white',  ratio: '3/4',  span: '',      cat: 'Publika',   alt: 'Ilustracija: silueta publike u kontra svetlu', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g5', scene: 'arch',   seed: 5,  tone: 'orange', ratio: '4/5',  span: '',      cat: 'Prostor',   alt: 'Ilustracija: svodovi i kapija prostora noću', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g6', scene: 'stage',  seed: 61, tone: 'ink',    ratio: '16/10', span: 'wide', cat: 'Bina',      alt: 'Ilustracija: bina u crvenom svetlu', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g7', scene: 'crowd',  seed: 73, tone: 'yellow', ratio: '1/1',  span: '',      cat: 'Ekipa',     alt: 'Ilustracija: ekipa u gomili', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g8', scene: 'lights', seed: 89, tone: 'orange', ratio: '3/4',  span: 'tall',  cat: 'Svetla',    alt: 'Ilustracija: svetlosni snopovi', year: null, src: null, credit: null, illustrative: true },
-  { id: 'g9', scene: 'arch',   seed: 97, tone: 'white',  ratio: '16/10', span: 'wide', cat: 'Prostor',   alt: 'Ilustracija: arhitektura prostora u kontrastu', year: null, src: null, credit: null, illustrative: true },
+  P('surreal-stage', 1600, 1066, 800, 'Bina', 'Izvođač sa mikrofonom ispred ekrana na kome piše SURREAL, u zelenom svetlu'),
+  P('surreal-crowd', 1600, 1066, 800, 'Bina', 'Plava bina sa ekranima SURREAL i publika u prvom planu'),
+  P('backstage-1', 1600, 1066, 800, 'Iza scene', 'Izvođači u raskošnim kostimima sa perjem iza bine, ispred cigljanog zida'),
+  P('backstage-2', 1600, 1066, 800, 'Iza scene', 'Povorka kostimiranih izvođača iza bine u plavom svetlu'),
+  P('costumes-stage', 902, 1353, 480, 'Izvođači', 'Plesači u plavim kostimima sa perjanicama na bini'),
+  P('crowd-1', 1600, 1066, 800, 'Publika', 'Publika u pokretu, devojke na ramenima, ljubičasto i zeleno svetlo'),
+  P('crowd-2', 1600, 1066, 800, 'Publika', 'Ekipa u gomili, dve devojke na ramenima plešu'),
+  P('live-1', 902, 1353, 480, 'Izvođači', 'Izvođačica na bini u zamahu, duga kosa i vojničke čizme'),
+  P('live-2', 902, 1353, 480, 'Izvođači', 'Izvođačica u pokretu, svetlosni tragovi u tirkizno i ljubičasto'),
+  P('live-3', 902, 1353, 480, 'Izvođači', 'Izvođačica peva u mikrofon, na majici RODMAN'),
+  P('live-4', 902, 1353, 480, 'Izvođači', 'Izvođačica sa mikrofonom ispred bubnjeva'),
+  P('live-5', 902, 1353, 480, 'Izvođači', 'Izvođačica na bini ispred ljubičastih ekrana'),
+  P('hat', 1600, 1066, 800, 'Izvođači', 'Izvođač u šarenom šeširu i košulji pruža ruku ka publici uz ogradu'),
+  P('blue', 1600, 1066, 800, 'Izvođači', 'Silueta izvođača u plavom svetlu okrenuta ka publici'),
+];
+export const photos = Object.fromEntries(gallery.map((g) => [g.id, g]));
+
+/* --------------------------------------------------------------------------
+   clips — kratki vertikalni klipovi (assets/video/klip-N.mp4, 720x1280, sa zvukom).
+   U traci se vrte bez zvuka; klik otvara prozor sa zvukom i kontrolama.
+   -------------------------------------------------------------------------- */
+export const clips = [
+  { id: 'klip-1', title: 'Iz publike', src: 'assets/video/klip-1.mp4', poster: 'assets/video/klip-1.webp', w: 720, h: 1280, year: null },
+  { id: 'klip-2', title: 'Uz ogradu', src: 'assets/video/klip-2.mp4', poster: 'assets/video/klip-2.webp', w: 720, h: 1280, year: null },
+  { id: 'klip-3', title: 'Na bini', src: 'assets/video/klip-3.mp4', poster: 'assets/video/klip-3.webp', w: 720, h: 1280, year: null },
 ];
 
 /* --------------------------------------------------------------------------

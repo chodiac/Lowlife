@@ -36,3 +36,8 @@ Open Graph slika `assets/og.jpg` je privremena grafika, zameniti.
 ## Izvori za arhivu
 - 2025: Respublica 034 (datumi, mesto, lista izvođača, nastupi 20:30–05:00).
 - 2026: Gigstix listing i bio zvaničnog Instagram profila (20–21. avgust 2026, Knežev arsenal). Lineup 2026 nije proveren.
+
+## Fotografije, klipovi i hero video
+- **Galerija:** `assets/photos/<id>.webp` (+ `-sm`), registar `gallery[]` u `config.js` (kategorija, alt, `year`/`credit` = null dok se ne potvrde). Filter po kategorijama se prikazuje sam kad ima bar 2 kategorije sa bar 2 fotografije.
+- **Klipovi:** `clips[]` u `config.js`, vertikalni 720×1280 sa zvukom (`assets/video/klip-N.mp4`). U traci se vrte bez zvuka samo dok su na ekranu; klik otvara prozor sa zvukom.
+- **Hero video:** `assets/video/hero-1080.mp4` (desktop) i `hero-540.mp4` (telefon, zapravo 720p), isečak 1:07–1:21 iz DJI_0019.MP4 (original nije u repou).
