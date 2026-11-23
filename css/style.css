@@ -541,3 +541,11 @@ dialog::backdrop{background:var(--ink)}
 @media (hover:hover){.slot--empty:hover .slot__q{color:var(--mid)}}
 .rm .l27__beam,.rm .slot__scan{animation:none}
 @media (max-width:760px){.l27__grid{grid-template-columns:repeat(2,1fr)}.l27__li:nth-child(even){margin-top:24px}.l27__year{font-size:90vw}.cd__u{min-width:calc(50% - 6px);flex:1 1 calc(50% - 6px)}}
+
+/* arhiva: lista izvođača ima svoj skrol, nezavisan od skrola stranice */
+.alist{max-height:min(80svh,820px);overflow-y:auto;overscroll-behavior:contain;padding-right:14px;scrollbar-width:thin;scrollbar-color:var(--mute) var(--deep)}
+.alist::-webkit-scrollbar{width:10px}
+.alist::-webkit-scrollbar-track{background:var(--deep)}
+.alist::-webkit-scrollbar-thumb{background:var(--mute)}
+.alist__btn:focus-visible{outline-offset:-3px}
+@media (max-width:1000px){.alist{max-height:72svh;overscroll-behavior:auto;padding-right:8px}}
