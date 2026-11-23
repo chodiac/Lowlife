@@ -268,26 +268,11 @@ function renderGallery() {
     li.className = 'gal__li'; li.dataset.id = g.id; li.dataset.cat = g.cat;
     li.innerHTML = `<button type="button" class="gal__item" data-v="${k % 4}" style="--ar:${g.w}/${g.h}" data-id="${g.id}" data-cap="${esc(g.cat)}${g.year ? ' · ' + g.year : ''}" aria-label="Otvori fotografiju: ${esc(g.alt)}" aria-haspopup="dialog">
       <img src="${g.src}" srcset="${g.srcset}" sizes="(max-width:1000px) 50vw, 33vw" alt="" loading="lazy" decoding="async" width="${g.w}" height="${g.h}">
-      <span class="gal__no" aria-hidden="true">${String(k + 1).padStart(2, '0')}</span>
       ${g.illustrative ? '<span class="ill">ILUSTRATIVNO</span>' : ''}</button>`;
     galEl[g.id] = li;
   });
   layoutGallery();
   matchMedia('(max-width: 1000px)').addEventListener('change', layoutGallery);
-  // filter po kategorijama: samo kad ima dovoljno stvarnog sadržaja
-  const cats = [...new Set(GALL.map((g) => g.cat))].filter((k) => GALL.filter((g) => g.cat === k).length >= 2);
-  const bar = $('#galFilter');
-  if (cats.length >= 2) {
-    bar.hidden = false;
-    bar.innerHTML = ['Sve', ...cats].map((k, i) => `<button type="button" class="seg__b${i ? '' : ' is-on'}" data-cat="${i ? esc(k) : ''}" aria-pressed="${i ? 'false' : 'true'}">${esc(k)} <b>${i ? GALL.filter((g) => g.cat === k).length : GALL.length}</b></button>`).join('');
-    bar.addEventListener('click', (e) => {
-      const b = e.target.closest('.seg__b'); if (!b) return;
-      const cat = b.dataset.cat;
-      $$('.seg__b', bar).forEach((n) => { n.classList.toggle('is-on', n === b); n.setAttribute('aria-pressed', n === b); });
-      G = GALL.filter((g) => !cat || g.cat === cat);
-      layoutGallery();
-    });
-  }
 }
 
 /* kursor-oznaka ("Otvori", "Pusti") nad galerijom i klipovima */

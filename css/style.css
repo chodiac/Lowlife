@@ -268,12 +268,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 @media (hover:hover){.play:hover .play__ic{transform:scale(1.12)}}
 
 /* ---------- GALERIJA ---------- */
-.gal__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:clamp(24px,4vw,56px)}
-.gal .giant{color:var(--lav)}
-.gal .giant .y{color:var(--mute)}
+.gal__title{margin:0 0 clamp(20px,3vw,40px);font:900 clamp(40px,7vw,104px)/.9 var(--display);color:var(--lav);text-transform:uppercase}
+.gal__title .y{color:var(--mute)}
 .gal .note{max-width:34em;line-height:1.5;text-transform:none;letter-spacing:.02em;font-weight:400;font-size:12px}
 .gal .note b{color:var(--yel);font-weight:600}
-.gal__filter{margin:0 0 clamp(16px,2.5vw,32px)}
 .gal__item{position:relative;display:block;width:100%;aspect-ratio:var(--ar);overflow:hidden;text-align:left;background:var(--ink)}
 .gal__item img{position:absolute;inset:-4% 0;height:108%;width:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .gal__item::after{content:attr(data-cap);position:absolute;left:0;bottom:0;padding:8px 12px;background:var(--ink);color:var(--white);font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;transform:translateY(101%);transition:transform .35s var(--ease)}
@@ -519,7 +517,6 @@ dialog::backdrop{background:var(--ink)}
 .gal__item[data-v="2"]{clip-path:polygon(0 0,100% 0,100% 92%,84% 100%,0 100%)}
 .gal__item[data-v="3"]{clip-path:polygon(0 0,84% 0,100% 6%,100% 100%,0 100%)}
 .gal__item:focus-visible{outline-offset:-5px}
-.gal__no{position:absolute;top:0;left:0;z-index:2;background:var(--ink);color:var(--mute);font:600 10px var(--mono);letter-spacing:.14em;padding:6px 10px}
 .cur{position:fixed;left:0;top:0;z-index:95;pointer-events:none;background:var(--mute);color:var(--ink);font:800 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;scale:0;transition:scale .2s var(--ease);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);white-space:nowrap}
 .cur.on{scale:1}
 @media (max-width:1000px){.gal__cols{grid-template-columns:repeat(2,1fr)}.gal__col:nth-child(3){display:none}.gal__col:nth-child(2){margin-top:36px}}
