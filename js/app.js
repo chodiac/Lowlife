@@ -333,7 +333,7 @@ function renderUtisci() {
     body.innerHTML = T.map((t) => `<figure class="quote" data-reveal><blockquote><q>${esc(t.quote)}</q></blockquote><figcaption><cite>${esc(t.author)}</cite> · <span class="mono">${t.year ?? ''}</span></figcaption></figure>`).join('');
   } else {
     body.innerHTML = `<div class="utisci__cta" data-reveal><h2 class="giant">TVOJ<br>LOWLIFE<br>TRENUTAK.</h2>
-      <div style="display:grid;gap:18px;justify-items:start"><p class="lead">Imaš kadar, utisak ili priču iz Kneževog arsenala? Pošalji ili označi zvanični profil — uz tvoju dozvolu objavljujemo ime i fotografiju ovde.</p>
+      <div style="display:grid;gap:18px;justify-items:start"><p class="lead">Imaš kadar, utisak ili priču iz Kneževog arsenala? Pošalji ili označi zvanični profil - uz tvoju dozvolu objavljujemo ime i fotografiju ovde.</p>
       <a class="btn btn--ink btn--lg" href="${C.socials[0].url}" target="_blank" rel="noopener">${esc(C.socials[0].handle)} ↗</a></div></div>`;
   }
 }
@@ -365,7 +365,7 @@ function renderTickets() {
 /* ======================= follow / info / faq / footer ======================= */
 function renderMisc() {
   $('#socials').innerHTML = C.socials.map((s) => `<a class="slink" href="${s.url}" target="_blank" rel="noopener"><div><span>${esc(s.label)}</span><b>${esc(s.handle)}</b></div><i aria-hidden="true">↗</i></a>`).join('');
-  $('#footSocials').innerHTML = C.socials.map((s) => `<li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.label)} — ${esc(s.handle)} ↗</a></li>`).join('')
+  $('#footSocials').innerHTML = C.socials.map((s) => `<li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.label)} - ${esc(s.handle)} ↗</a></li>`).join('')
     + (F.contact?.email ? `<li><a href="mailto:${esc(F.contact.email)}">${esc(F.contact.email)}</a></li>` : '');
   if (C.partners.length) {
     $('#footPartners').hidden = false;
@@ -494,7 +494,7 @@ function heroMotion() {
     gsap.set(fade, { opacity: 0, y: 18 }); gsap.set(photo, { clipPath: collapse(L) });
     gsap.set(inner, { scale: 1.25 });
 
-    // 1) ulazni reveal — odmah, bez čekanja
+    // 1) ulazni reveal - odmah, bez čekanja
     const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
     intro.to(photo, { clipPath: L, duration: 1.1, ease: 'power3.inOut' }, 0.05)
       .to(inner, { scale: 1, duration: 1.8, ease: 'power2.out' }, 0.05)

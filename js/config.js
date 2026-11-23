@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LOWLIFE / PARTYLIFE — sadržaj i konfiguracija
+   LOWLIFE / PARTYLIFE - sadržaj i konfiguracija
    Sve što se menja kad stignu zvanične informacije je OVDE.
    Nijedan podatak ispod nije izmišljen: što nije potvrđeno, stoji kao null.
    ========================================================================== */
@@ -28,7 +28,7 @@ export const festivalConfig = {
 };
 
 /* --------------------------------------------------------------------------
-   editions — prošla i buduća izdanja, jasno odvojena
+   editions - prošla i buduća izdanja, jasno odvojena
    status: 'past' | 'upcoming'
    -------------------------------------------------------------------------- */
 export const editions = [
@@ -96,25 +96,25 @@ const a = (name, day, extra = {}) => {
 };
 
 export const artists = [
-  // — Prvi dan (15. avgust 2025.)
+  // - Prvi dan (15. avgust 2025.)
   a('Rie', 1), a('Nina Todorović', 1), a('Biba', 1), a('Napoleon', 1),
   a('Corona', 1), a('Rimski', 1), a('100K', 1), a('Arafat', 1),
   a('Faberge', 1), a('Kza', 1), a('Vekac', 1), a('Surreal', 1), a('Tasha', 1),
-  // — Drugi dan (16. avgust 2025.)
+  // - Drugi dan (16. avgust 2025.)
   a('Diamond Costi', 2), a('Mila', 2), a('Momica', 2), a('Tanatos', 2),
   a('Jowam', 2), a('Rouzi', 2), a('Elena Kitić', 2), a('Atlas Erotika', 2),
   a('KIMMV-u', 2), a('Yungkulovski', 2), a('Fox', 2), a('TNG', 2), a('Mimi Mercedez', 2),
 ];
 
 /* --------------------------------------------------------------------------
-   schedule — prazno dok organizator ne objavi raspored.
+   schedule - prazno dok organizator ne objavi raspored.
    { artistId, edition, day, start:'22:30', stage:'Main stage' }
    Kad se popuni, lineup dobija satnice i filter po danima iz rasporeda.
    -------------------------------------------------------------------------- */
 export const schedule = [];
 
 /* --------------------------------------------------------------------------
-   gallery — autentične fotografije iz assets/photos/ (<id>.webp + <id>-sm.webp).
+   gallery - autentične fotografije iz assets/photos/ (<id>.webp + <id>-sm.webp).
    year / credit su null dok se ne potvrde (ne izmišljamo). cat = kategorija filtera;
    filter se prikazuje samo kad postoje bar 2 kategorije sa bar 2 fotografije.
    Nova fotografija: dodaj fajlove u assets/photos/ i jedan red ovde.
@@ -142,7 +142,7 @@ export const gallery = [
 export const photos = Object.fromEntries(gallery.map((g) => [g.id, g]));
 
 /* --------------------------------------------------------------------------
-   clips — kratki vertikalni klipovi (assets/video/klip-N.mp4, 720x1280, sa zvukom).
+   clips - kratki vertikalni klipovi (assets/video/klip-N.mp4, 720x1280, sa zvukom).
    U traci se vrte bez zvuka; klik otvara prozor sa zvukom i kontrolama.
    -------------------------------------------------------------------------- */
 export const clips = [
@@ -152,20 +152,20 @@ export const clips = [
 ];
 
 /* --------------------------------------------------------------------------
-   tickets — SAMO potvrđene opcije. Prazno = „Uskoro.“
+   tickets - SAMO potvrđene opcije. Prazno = „Uskoro.“
    { id, name, price:'3.000 RSD' | null, day:'…' | null, perks:['…'], url:null|'…', soldOut:false }
    Nema izmišljenog broja preostalih karata.
    -------------------------------------------------------------------------- */
 export const tickets = [];
 
 /* --------------------------------------------------------------------------
-   testimonials — samo odobrene izjave. Prazno = poziv „Tvoj LOWLIFE trenutak“.
+   testimonials - samo odobrene izjave. Prazno = poziv „Tvoj LOWLIFE trenutak“.
    { quote, author:'ime ili @username', year:2025, photo:null }
    -------------------------------------------------------------------------- */
 export const testimonials = [];
 
 /* --------------------------------------------------------------------------
-   info — praktične informacije; confirmed:false → „Detalji uskoro.“
+   info - praktične informacije; confirmed:false → „Detalji uskoro.“
    archive: činjenica iz prošlog izdanja, jasno označena.
    -------------------------------------------------------------------------- */
 export const info = [
@@ -202,6 +202,6 @@ export const partners = [];
 
 /* Linkovi ka zvaničnim izvorima koji su korišćeni za arhivu */
 export const sources = [
-  { label: 'Izdanje 2025 — Respublica 034', url: editions[0].source.url },
-  { label: 'Izdanje 2026 — Gigstix listing', url: editions[1].source.url },
+  { label: 'Izdanje 2025 - Respublica 034', url: editions[0].source.url },
+  { label: 'Izdanje 2026 - Gigstix listing', url: editions[1].source.url },
 ];

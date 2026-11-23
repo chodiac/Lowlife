@@ -1,4 +1,4 @@
-/* Procedurally drawn ILLUSTRATIVE scenes (SVG). Not photographs — placeholders
+/* Procedurally drawn ILLUSTRATIVE scenes (SVG). Not photographs - placeholders
    until real LOWLIFE photos are added via config.js (`src`). */
 
 /* Samo tačne boje palete, bez providnosti i gradijenata. */
