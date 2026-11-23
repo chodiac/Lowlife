@@ -274,8 +274,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .gal .note{max-width:34em;line-height:1.5;text-transform:none;letter-spacing:.02em;font-weight:400;font-size:12px}
 .gal .note b{color:var(--yel);font-weight:600}
 .gal__filter{margin:0 0 clamp(16px,2.5vw,32px)}
-.gal__grid{columns:3;column-gap:clamp(8px,1vw,16px)}
-.gal__grid li{break-inside:avoid;margin-bottom:clamp(8px,1vw,16px);position:relative}
 .gal__item{position:relative;display:block;width:100%;aspect-ratio:var(--ar);overflow:hidden;text-align:left;background:var(--ink)}
 .gal__item img{position:absolute;inset:-4% 0;height:108%;width:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .gal__item::after{content:attr(data-cap);position:absolute;left:0;bottom:0;padding:8px 12px;background:var(--ink);color:var(--white);font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;transform:translateY(101%);transition:transform .35s var(--ease)}
@@ -285,44 +283,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* ---------- UTISCI ---------- */
 .utisci .wrap{display:grid;gap:30px}
-.utisci__cta{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end}
-.utisci__cta h2{font-size:clamp(60px,12vw,230px)}
-.utisci__cta p{max-width:28em}
-.quote{border-top:2px solid var(--lav);padding:24px 0;display:grid;grid-template-columns:1fr auto;gap:10px 30px}
-.quote q{font:900 clamp(34px,5.5vw,92px)/.92 var(--display);text-transform:uppercase;quotes:"„" "“"}
-.quote cite{font-style:normal}
 
 /* ---------- KARTE ---------- */
-.tix__list{margin-top:clamp(30px,5vw,70px);display:grid;gap:22px}
-.ticket{--n:18px;--p:72%;position:relative;display:grid;grid-template-columns:minmax(0,1fr) clamp(170px,22%,280px);background:var(--ink);color:var(--white);min-height:300px;
-  -webkit-mask:radial-gradient(circle var(--n) at var(--p) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at var(--p) 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
-  mask:radial-gradient(circle var(--n) at var(--p) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at var(--p) 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
-  transition:transform .4s var(--ease)}
-.ticket--o{background:var(--mid);color:var(--lav)}
-@media (hover:hover){.ticket:hover{transform:translateY(-6px) rotate(-.4deg)}}
-.ticket__main{padding:clamp(22px,3vw,46px);display:flex;flex-direction:column;justify-content:space-between;gap:26px;border-right:2px dashed currentColor;position:relative}
-.ticket__main .big{font:900 clamp(60px,9.5vw,180px)/.8 var(--display);text-transform:uppercase}
-.ticket__row{display:flex;flex-wrap:wrap;gap:12px 34px}
-.ticket__row div{display:grid;gap:4px}
-.ticket__row b{font:800 clamp(18px,2vw,28px)/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em}
-.ticket__stub{padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;align-items:flex-start;background:var(--yel);color:var(--ink)}
-.ticket--o .ticket__stub{background:var(--ink);color:var(--white)}
 .barcode{height:62px;width:100%;background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px,currentColor 6px 7px,transparent 7px 12px,currentColor 12px 16px,transparent 16px 18px);}
-.ticket__stub .btn{--bg:var(--ink);--fg:var(--white);width:100%;justify-content:center}
-.ticket--o .ticket__stub .btn{--bg:var(--yel);--fg:var(--ink)}
-.ticket__perks{display:grid;gap:4px;font-size:14px}
-.ticket__perks li::before{content:"+ ";font-weight:800}
 .tix__fine{font-size:13px;margin-top:6px}
 
 /* ---------- PRATI ---------- */
-.follow__in{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(30px,5vw,90px);align-items:end}
-.follow .lead{margin-top:26px;}
-.follow__links{display:grid;gap:12px}
-.slink{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 22px;background:var(--mid);color:var(--lav);text-decoration:none;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%);transition:background .3s,color .3s}
-.slink b{font:900 clamp(30px,3.6vw,56px)/1 var(--display);text-transform:uppercase;display:block}
-.slink span{font:600 12px var(--mono);letter-spacing:.1em}
-.slink i{font-style:normal;font-size:30px;transition:transform .3s var(--ease)}
-@media (hover:hover){.slink:hover{background:var(--lav);color:var(--ink)}.slink:hover i{transform:translate(4px,-4px)}}
 
 /* ---------- INFO ---------- */
 .info .h-xl{margin-bottom:clamp(30px,5vw,70px)}
@@ -409,11 +375,8 @@ dialog::backdrop{background:var(--ink)}
   .alist__n{grid-area:n}.alist__name{grid-area:name;min-width:0;overflow-wrap:anywhere;font-size:clamp(46px,14vw,110px)}.alist__meta{grid-area:meta}.alist__thumb{grid-area:thumb}
   .alist__btn.is-act{padding-left:0}
   .alist__fav{display:none}
-  .follow__in{grid-template-columns:1fr}
   .info__grid{grid-template-columns:1fr 1fr}
   .foot__cols{grid-template-columns:1fr 1fr}
-  .gal__grid{columns:2}
-  .utisci__cta{grid-template-columns:1fr}
 }
 @media (max-width:760px){
   :root{--nav:56px;--L:polygon(44% 0,76% 0,76% 56%,100% 56%,100% 100%,22% 100%,22% 12%,44% 0)}
@@ -431,11 +394,6 @@ dialog::backdrop{background:var(--ink)}
   .stage__beams{display:none}
   .info__grid{grid-template-columns:1fr}
   .icard{min-height:0}
-  .ticket{grid-template-columns:1fr;--p:0%;
-    -webkit-mask:none;mask:none;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
-  .ticket__main{border-right:0;border-bottom:2px dashed currentColor;padding-bottom:30px}
-  .ticket__stub{flex-direction:row;flex-wrap:wrap;align-items:center}
-  .ticket__stub .barcode{flex:1 1 100%}
   .fq__a p{padding-right:0}
   .foot{padding-bottom:calc(100px + var(--safe-b))}
   .foot__cols{grid-template-columns:1fr}
@@ -549,3 +507,133 @@ dialog::backdrop{background:var(--ink)}
 .alist::-webkit-scrollbar-thumb{background:var(--mute)}
 .alist__btn:focus-visible{outline-offset:-3px}
 @media (max-width:1000px){.alist{max-height:72svh;overscroll-behavior:auto;padding-right:8px}}
+
+/* =====================================================================
+   GALERIJA: kolone sa paralaksom, rezovi, kursor-oznaka
+   ===================================================================== */
+.gal__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1vw,16px);align-items:start}
+.gal__col{display:grid;gap:clamp(8px,1vw,16px);align-content:start}
+.gal__col:nth-child(2){margin-top:clamp(0px,9vw,150px)}
+.gal__li{position:relative}
+.gal__item[data-v="1"]{clip-path:polygon(0 6%,16% 0,100% 0,100% 100%,0 100%)}
+.gal__item[data-v="2"]{clip-path:polygon(0 0,100% 0,100% 92%,84% 100%,0 100%)}
+.gal__item[data-v="3"]{clip-path:polygon(0 0,84% 0,100% 6%,100% 100%,0 100%)}
+.gal__item:focus-visible{outline-offset:-5px}
+.gal__no{position:absolute;top:0;left:0;z-index:2;background:var(--ink);color:var(--mute);font:600 10px var(--mono);letter-spacing:.14em;padding:6px 10px}
+.cur{position:fixed;left:0;top:0;z-index:95;pointer-events:none;background:var(--mute);color:var(--ink);font:800 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;scale:0;transition:scale .2s var(--ease);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);white-space:nowrap}
+.cur.on{scale:1}
+@media (max-width:1000px){.gal__cols{grid-template-columns:repeat(2,1fr)}.gal__col:nth-child(3){display:none}.gal__col:nth-child(2){margin-top:36px}}
+
+/* klipovi: nagnute kartice, brojevi, dugme za zvuk */
+.clips__track{padding-top:30px;padding-bottom:26px}
+.clip{transition:rotate .45s var(--ease),translate .45s var(--ease)}
+.clip:nth-child(odd){rotate:-1.6deg}
+.clip:nth-child(even){rotate:1.3deg;translate:0 22px}
+@media (hover:hover){.clip:hover{rotate:0deg;translate:0 -8px}}
+.clip__no{position:absolute;top:0;right:0;z-index:2;background:var(--mute);color:var(--ink);font:900 24px/1 var(--display);padding:8px 12px}
+.clip__btn::before{content:"";position:absolute;right:14px;bottom:14px;z-index:2;width:54px;height:54px;border-radius:50%;background:var(--mute)}
+.clip__btn::after{content:"";position:absolute;right:30px;bottom:30px;z-index:3;border-left:15px solid var(--ink);border-block:10px solid transparent}
+
+/* =====================================================================
+   UTISCI: polaroidi + tražilo kamere
+   ===================================================================== */
+.utisci{overflow:hidden}
+.ut{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,80px);align-items:center}
+.ut__copy .giant{font-size:clamp(64px,10.5vw,200px);display:block}
+.ut__copy .giant .o{color:transparent;-webkit-text-stroke:3px var(--lav)}
+.ut__copy .lead{margin-top:26px}
+.ut__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.ut__stage{position:relative;aspect-ratio:1/1.08;min-height:400px}
+.pol{position:absolute;width:56%;background:var(--lav);color:var(--ink);padding:10px 10px 40px;margin:0;
+  rotate:var(--r,0deg);translate:calc(var(--mx,0) * var(--d,10) * 1px) calc(var(--my,0) * var(--d,10) * 1px);transition:translate .3s var(--ease)}
+.pol__img{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--ink)}
+.pol figcaption{position:absolute;left:14px;bottom:12px;font:600 10px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.pol--1{left:0;top:0}
+.pol--2{right:0;top:18%;z-index:2}
+.pol--3{left:12%;bottom:0;z-index:3;width:50%}
+.vf{position:absolute;inset:22px 22px 52px 22px;pointer-events:none;z-index:4}
+.vf i{position:absolute;width:28px;height:28px;border:3px solid var(--mute)}
+.vf i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}
+.vf i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
+.vf i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}
+.vf i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+.vf b{position:absolute;left:36px;top:2px;background:var(--ink);color:var(--mute);padding:5px 9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.quotes{display:grid;gap:clamp(16px,2vw,28px);margin-top:30px}
+.quote{background:var(--ink);color:var(--lav);padding:clamp(20px,3vw,40px);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
+.quote q{font:900 clamp(34px,5vw,84px)/.92 var(--display);text-transform:uppercase;quotes:"„" "“"}
+.quote cite{font-style:normal;font-weight:700}
+@media (max-width:1000px){.ut{grid-template-columns:1fr}.ut__stage{min-height:360px;max-width:520px;margin:10px auto 0;width:100%}}
+
+/* =====================================================================
+   KARTE: tamna scena, konturni redovi, ulaznica koja se kida
+   ===================================================================== */
+.tix{overflow:hidden}
+.tix__bg{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;pointer-events:none;overflow:hidden}
+.tix__row{display:flex;width:max-content;white-space:nowrap;font:900 clamp(90px,14vw,240px)/.9 var(--display);color:transparent;-webkit-text-stroke:2px var(--mid);animation:marq 60s linear infinite}
+.tix__row--r{animation-direction:reverse;animation-duration:80s}
+.tix__in{position:relative;z-index:1}
+.tix__list{margin-top:clamp(30px,5vw,70px);display:grid;gap:clamp(28px,4vw,56px);perspective:1500px}
+.tkt{--n:18px;position:relative;display:flex;min-height:clamp(300px,32vw,430px);transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .3s var(--ease);will-change:transform}
+.tkt__main{position:relative;flex:1 1 auto;min-width:0;overflow:hidden;background:var(--mid);color:var(--lav);padding:clamp(22px,3vw,46px);display:flex;flex-direction:column;justify-content:space-between;gap:26px;
+  -webkit-mask:radial-gradient(circle var(--n) at 100% 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at 100% 100%,#0000 97%,#000) bottom/100% 51% no-repeat;
+  mask:radial-gradient(circle var(--n) at 100% 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at 100% 100%,#0000 97%,#000) bottom/100% 51% no-repeat}
+.tkt__main::before{content:"";position:absolute;right:0;top:22px;bottom:22px;border-right:2px dashed currentColor}
+.tkt__main>*{position:relative}
+.tkt__main .scan{position:absolute;inset:0;border-left:6px solid var(--mute);animation:scanx 5.5s linear infinite;pointer-events:none}
+@keyframes scanx{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.tkt__main .big{font:900 clamp(64px,9.5vw,180px)/.8 var(--display);text-transform:uppercase}
+.tkt__row{display:flex;flex-wrap:wrap;gap:12px 34px}
+.tkt__row div{display:grid;gap:4px}
+.tkt__row b{font:800 clamp(18px,2vw,28px)/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.tkt__perks{display:grid;gap:4px;font-size:14px}
+.tkt__perks li::before{content:"+ ";font-weight:800}
+.tkt__stub{flex:0 0 clamp(190px,22%,300px);background:var(--mute);color:var(--ink);padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;align-items:flex-start;
+  transition:translate .5s var(--ease),rotate .5s var(--ease);
+  -webkit-mask:radial-gradient(circle var(--n) at 0 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at 0 100%,#0000 97%,#000) bottom/100% 51% no-repeat;
+  mask:radial-gradient(circle var(--n) at 0 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at 0 100%,#0000 97%,#000) bottom/100% 51% no-repeat}
+.tkt__stub .btn{--bg:var(--ink);--fg:var(--lav);width:100%;justify-content:center}
+.tkt__msg{font-weight:700;line-height:1.25}
+@media (hover:hover){.tkt:hover .tkt__stub{translate:18px -6px;rotate:3deg}}
+.tkt--alt .tkt__main{background:var(--lav);color:var(--ink)}
+.tkt--alt .tkt__main .scan{border-color:var(--mid)}
+.tkt--alt .tkt__stub{background:var(--mid);color:var(--lav)}
+.tkt--alt .tkt__stub .btn{--bg:var(--mute);--fg:var(--ink)}
+.tix__fine{font-size:13px;color:var(--lav);margin-top:-14px}
+@media (max-width:760px){
+  .tkt{flex-direction:column}
+  .tkt__main{-webkit-mask:radial-gradient(circle var(--n) at 0 100%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--n) at 100% 100%,#0000 97%,#000) right/51% 100% no-repeat;mask:radial-gradient(circle var(--n) at 0 100%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--n) at 100% 100%,#0000 97%,#000) right/51% 100% no-repeat}
+  .tkt__main::before{left:22px;right:22px;top:auto;bottom:0;border-right:0;border-bottom:2px dashed currentColor}
+  .tkt__stub{flex:0 0 auto;-webkit-mask:radial-gradient(circle var(--n) at 0 0,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--n) at 100% 0,#0000 97%,#000) right/51% 100% no-repeat;mask:radial-gradient(circle var(--n) at 0 0,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--n) at 100% 0,#0000 97%,#000) right/51% 100% no-repeat}
+  .tkt__stub .barcode{flex:1 1 100%}
+}
+
+/* =====================================================================
+   PRATI NAJAVE: radar prstenovi + rotirajuća značka
+   ===================================================================== */
+.follow{overflow:hidden}
+.follow__bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.follow__bg .ring{position:absolute;left:76%;top:52%;width:var(--s);aspect-ratio:1;translate:-50% -50%;border:2px solid var(--mid);border-radius:50%;animation:pulse 5s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes pulse{0%,100%{scale:.94}50%{scale:1.05}}
+.follow__in{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(30px,5vw,90px);align-items:center}
+.steps{margin:clamp(24px,3vw,40px) 0 0;border-top:2px solid var(--lav);display:grid}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:center;padding:16px 0;border-bottom:1px solid var(--mid)}
+.steps b{font:900 clamp(38px,4.4vw,68px)/.9 var(--display);color:var(--mute)}
+.steps span{font-weight:600;font-size:clamp(17px,1.5vw,22px)}
+.steps em{font-style:normal;color:var(--mute)}
+.follow__fine{margin-top:18px;font-size:13px;color:var(--lav)}
+.follow__badge{display:grid;justify-items:center;gap:18px}
+.badge{position:relative;display:grid;place-items:center;width:clamp(250px,28vw,430px);aspect-ratio:1;text-decoration:none;color:var(--lav)}
+.badge__ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 22s linear infinite}
+.badge__ring text{font:900 17px var(--display);fill:currentColor;letter-spacing:.04em;text-transform:uppercase}
+@keyframes spin{to{transform:rotate(360deg)}}
+.badge__disc{width:46%;aspect-ratio:1;border-radius:50%;background:var(--mute);color:var(--ink);display:grid;place-items:center;transition:scale .35s var(--ease),rotate .35s var(--ease)}
+.badge__disc i{font:900 clamp(60px,8vw,130px)/1 var(--display);font-style:normal}
+@media (hover:hover){.badge:hover .badge__disc{scale:1.1;rotate:12deg}.badge:hover .badge__ring{animation-duration:8s}}
+.badge__h{color:var(--mute)}
+.badge__more{display:grid;gap:6px;justify-items:center}
+.badge__more a{font-weight:600}
+@media (max-width:1000px){
+  .follow__in{grid-template-columns:1fr}
+  .follow__bg .ring{left:50%;top:80%}
+}
+.rm .tix__row,.rm .tkt__main .scan,.rm .follow__bg .ring,.rm .badge__ring{animation:none}

@@ -253,12 +253,27 @@ function openArtist(id, opener) {
 /* ======================= gallery + lightbox ======================= */
 const GALL = C.gallery;
 let G = GALL.slice();            // trenutno vidljive (po filteru)
-const galGrid = $('#galGrid');
+const galGrid = $('#galCols');
+const galEl = {};
+const galN = () => (matchMedia('(max-width: 1000px)').matches ? 2 : 3);
+function layoutGallery() {
+  const n = galN(), cols = $$('.gal__col', galGrid), h = Array(n).fill(0);
+  cols.forEach((c) => c.replaceChildren());
+  G.forEach((g) => { const i = h.indexOf(Math.min(...h)); h[i] += g.h / g.w + 0.05; cols[i].append(galEl[g.id]); });
+  ScrollTrigger?.refresh?.();
+}
 function renderGallery() {
-  galGrid.innerHTML = GALL.map((g) => `<li data-id="${g.id}" data-cat="${esc(g.cat)}"><button type="button" class="gal__item" style="--ar:${g.w}/${g.h}" data-id="${g.id}" data-cap="${esc(g.cat)}${g.year ? ' · ' + g.year : ''}" aria-label="Otvori fotografiju: ${esc(g.alt)}" aria-haspopup="dialog">
-    <img src="${g.src}" srcset="${g.srcset}" sizes="(max-width:1000px) 50vw, 33vw" alt="" loading="lazy" decoding="async" width="${g.w}" height="${g.h}">
-    ${g.illustrative ? '<span class="ill">ILUSTRATIVNO</span>' : ''}
-  </button></li>`).join('');
+  GALL.forEach((g, k) => {
+    const li = document.createElement('li');
+    li.className = 'gal__li'; li.dataset.id = g.id; li.dataset.cat = g.cat;
+    li.innerHTML = `<button type="button" class="gal__item" data-v="${k % 4}" style="--ar:${g.w}/${g.h}" data-id="${g.id}" data-cap="${esc(g.cat)}${g.year ? ' · ' + g.year : ''}" aria-label="Otvori fotografiju: ${esc(g.alt)}" aria-haspopup="dialog">
+      <img src="${g.src}" srcset="${g.srcset}" sizes="(max-width:1000px) 50vw, 33vw" alt="" loading="lazy" decoding="async" width="${g.w}" height="${g.h}">
+      <span class="gal__no" aria-hidden="true">${String(k + 1).padStart(2, '0')}</span>
+      ${g.illustrative ? '<span class="ill">ILUSTRATIVNO</span>' : ''}</button>`;
+    galEl[g.id] = li;
+  });
+  layoutGallery();
+  matchMedia('(max-width: 1000px)').addEventListener('change', layoutGallery);
   // filter po kategorijama: samo kad ima dovoljno stvarnog sadržaja
   const cats = [...new Set(GALL.map((g) => g.cat))].filter((k) => GALL.filter((g) => g.cat === k).length >= 2);
   const bar = $('#galFilter');
@@ -269,12 +284,39 @@ function renderGallery() {
       const b = e.target.closest('.seg__b'); if (!b) return;
       const cat = b.dataset.cat;
       $$('.seg__b', bar).forEach((n) => { n.classList.toggle('is-on', n === b); n.setAttribute('aria-pressed', n === b); });
-      $$('li', galGrid).forEach((li) => (li.hidden = !!cat && li.dataset.cat !== cat));
       G = GALL.filter((g) => !cat || g.cat === cat);
-      ScrollTrigger?.refresh?.();
+      layoutGallery();
     });
   }
 }
+
+/* kursor-oznaka ("Otvori", "Pusti") nad galerijom i klipovima */
+function cursorChip() {
+  if (FORCE === 'reduced' || !matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  const chip = document.createElement('div');
+  chip.className = 'cur'; chip.setAttribute('aria-hidden', 'true'); document.body.append(chip);
+  const bind = (root, sel, txt) => {
+    if (!root) return;
+    root.addEventListener('pointermove', (e) => {
+      const t = e.target.closest(sel); chip.classList.toggle('on', !!t);
+      if (t) { chip.textContent = txt; chip.style.transform = `translate3d(${e.clientX + 18}px,${e.clientY + 18}px,0)`; }
+    });
+    root.addEventListener('pointerleave', () => chip.classList.remove('on'));
+  };
+  bind($('#galCols'), '.gal__item', 'Otvori ↗');
+  bind($('#clipsTrack'), '.clip__btn', 'Pusti ▶');
+}
+
+/* blagi 3D nagib prema kursoru (miš) */
+function pointerTilt(root, sel, max = 6) {
+  if (!root || FORCE === 'reduced' || !matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  let raf = 0, cur = null, px = 0, py = 0;
+  const reset = (el) => { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); };
+  const apply = () => { raf = 0; if (!cur) return; const r = cur.getBoundingClientRect(); const nx = (px - r.left) / r.width - 0.5, ny = (py - r.top) / r.height - 0.5; cur.style.setProperty('--ry', (nx * max * 2).toFixed(2) + 'deg'); cur.style.setProperty('--rx', (-ny * max * 2).toFixed(2) + 'deg'); };
+  root.addEventListener('pointermove', (e) => { const t = e.target.closest(sel); if (cur && cur !== t) reset(cur); cur = t; px = e.clientX; py = e.clientY; if (cur && !raf) raf = requestAnimationFrame(apply); });
+  root.addEventListener('pointerleave', () => { if (cur) { reset(cur); cur = null; } });
+}
+
 const lb = $('#lightbox'); let lbI = 0, lbOpener = null;
 function lbShow(i) {
   lbI = (i + G.length) % G.length;
@@ -331,7 +373,7 @@ function renderClips() {
   const track = $('#clipsTrack'); if (!track || !C.clips.length) { $('#klipovi')?.setAttribute('hidden', ''); return; }
   track.innerHTML = C.clips.map((c, i) => `<li class="clip"><button type="button" class="clip__btn" data-i="${i}" aria-haspopup="dialog" aria-label="Pusti klip „${esc(c.title)}“ sa zvukom">
     <video muted loop playsinline preload="none" poster="${c.poster}" data-src="${c.src}" width="${c.w}" height="${c.h}" aria-hidden="true" tabindex="-1"></video>
-    <span class="clip__tag"><b>${esc(c.title)}</b><i>▶ Sa zvukom</i></span></button></li>`).join('');
+    <span class="clip__no" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><span class="clip__tag"><b>${esc(c.title)}</b><i>▶ Sa zvukom</i></span></button></li>`).join('');
   track.addEventListener('click', (e) => {
     const b = e.target.closest('.clip__btn'); if (!b) return;
     const c = C.clips[+b.dataset.i]; openVideo(c.src, c.poster, b);
@@ -363,41 +405,71 @@ function renderClips() {
 function renderUtisci() {
   const T = C.testimonials, body = $('#utisciBody');
   if (T.length) {
-    body.innerHTML = T.map((t) => `<figure class="quote" data-reveal><blockquote><q>${esc(t.quote)}</q></blockquote><figcaption><cite>${esc(t.author)}</cite> · <span class="mono">${t.year ?? ''}</span></figcaption></figure>`).join('');
-  } else {
-    body.innerHTML = `<div class="utisci__cta" data-reveal><h2 class="giant">TVOJ<br>LOWLIFE<br>TRENUTAK.</h2>
-      <div style="display:grid;gap:18px;justify-items:start"><p class="lead">Imaš kadar, utisak ili priču iz Kneževog arsenala? Pošalji ili označi zvanični profil - uz tvoju dozvolu objavljujemo ime i fotografiju ovde.</p>
-      <a class="btn btn--ink btn--lg" href="${C.socials[0].url}" target="_blank" rel="noopener">${esc(C.socials[0].handle)} ↗</a></div></div>`;
+    body.innerHTML = `<h2 class="giant giant--md" data-reveal>UTISCI.</h2><div class="quotes">` + T.map((t) => `<figure class="quote" data-reveal><blockquote><q>${esc(t.quote)}</q></blockquote><figcaption><cite>${esc(t.author)}</cite>${t.year ? ' <span class="mono">' + t.year + '</span>' : ''}</figcaption></figure>`).join('') + '</div>';
+    return;
+  }
+  const ig = C.socials[0];
+  body.innerHTML = `<div class="ut">
+    <div class="ut__copy" data-reveal>
+      <h2 class="giant">TVOJ<br>LOWLIFE<br><span class="o">TRENUTAK.</span></h2>
+      <p class="lead">Imaš kadar, utisak ili priču sa festivala? Pošalji ili označi zvanični profil - uz tvoju dozvolu objavljujemo ime i fotografiju ovde.</p>
+      <div class="ut__cta"><a class="btn btn--ink btn--lg" href="${ig.url}" target="_blank" rel="noopener">${esc(ig.handle)} ↗</a><a class="btn btn--lg btn--ghost" href="#galerija">Pogledaj galeriju</a></div>
+    </div>
+    <div class="ut__stage" id="utStage" aria-hidden="true">
+      <figure class="pol pol--1" style="--r:-7deg;--d:26"><div class="pol__img" data-photo="crowd-1" data-pos="62% 50%" data-sizes="(max-width:1000px) 60vw, 26vw"></div><figcaption class="mono">#lowlife</figcaption></figure>
+      <figure class="pol pol--2" style="--r:5deg;--d:14"><div class="pol__img" data-photo="hat" data-pos="55% 40%" data-sizes="(max-width:1000px) 60vw, 26vw"></div><figcaption class="mono">tvoj kadar</figcaption>
+        <span class="vf"><i></i><i></i><i></i><i></i><b class="mono">● Snima</b></span></figure>
+      <figure class="pol pol--3" style="--r:-3deg;--d:36"><div class="pol__img" data-photo="crowd-2" data-pos="36% 40%" data-sizes="(max-width:1000px) 60vw, 24vw"></div><figcaption class="mono">ispred bine</figcaption></figure>
+    </div>
+  </div>`;
+  const st = $('#utStage');
+  if (FORCE !== 'reduced' && matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    let raf = 0, mx = 0, my = 0;
+    st.parentElement.addEventListener('pointermove', (e) => {
+      const r = st.getBoundingClientRect(); mx = ((e.clientX - r.left) / r.width - 0.5) * 2; my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      if (!raf) raf = requestAnimationFrame(() => { raf = 0; st.style.setProperty('--mx', mx.toFixed(3)); st.style.setProperty('--my', my.toFixed(3)); });
+    });
   }
 }
 
 /* ======================= karte ======================= */
+function ticketHTML({ tag, big, rows, perks, cta, alt }) {
+  return `<div class="tkt__wrap" data-reveal><article class="tkt${alt ? ' tkt--alt' : ''}">
+    <div class="tkt__main"><i class="scan" aria-hidden="true"></i>
+      <div class="mono">${tag}</div><div class="big">${big}</div>
+      <div class="tkt__row">${rows.map(([l, v]) => `<div><span class="mono">${l}</span><b>${v}</b></div>`).join('')}</div>
+      ${perks?.length ? `<ul class="tkt__perks">${perks.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>` : ''}</div>
+    <div class="tkt__stub"><div class="barcode" aria-hidden="true"></div>${cta}</div></article></div>`;
+}
 function renderTickets() {
   const list = $('#tixList');
   if (!C.tickets.length) {
-    list.innerHTML = `<article class="ticket ticket--o" data-reveal>
-      <div class="ticket__main"><div class="mono">LOWLIFE / PARTYLIFE · Kragujevac</div>
-        <div class="big">Izdanje<br>${F.year}</div>
-        <div class="ticket__row"><div><span class="mono">Datum</span><b>${F.dates ? esc(F.dates.label) : 'Uskoro'}</b></div><div><span class="mono">Lokacija</span><b>${F.venue?.confirmed ? esc(F.venue.name) : 'Uskoro'}</b></div><div><span class="mono">Cena</span><b>Uskoro</b></div></div></div>
-      <div class="ticket__stub"><div class="barcode" aria-hidden="true"></div><p style="font-weight:600">Informacije o ulaznicama objavljujemo uskoro.</p>
-        <a class="btn btn--lg" data-cta href="#pratite">Prati najave <i aria-hidden="true">→</i></a></div></article>
-      <p class="tix__fine">Ilustracija ulaznice, nije važeći dokument. Bez prodaje i bez rezervacija dok organizator ne objavi zvanične informacije.</p>`;
-    return;
+    list.innerHTML = ticketHTML({
+      tag: 'LOWLIFE / PARTYLIFE · Kragujevac', big: `Izdanje<br>${F.year}`,
+      rows: [['Datum', F.dates ? esc(F.dates.label) : 'Uskoro'], ['Lokacija', F.venue?.confirmed ? esc(F.venue.name) : 'Uskoro'], ['Cena', 'Uskoro']],
+      cta: `<p class="tkt__msg">Informacije o ulaznicama objavljujemo uskoro.</p><a class="btn btn--lg" data-cta href="#pratite">Prati najave <i aria-hidden="true">→</i></a>`,
+    }) + `<p class="tix__fine">Ilustracija ulaznice, nije važeći dokument. Bez prodaje i bez rezervacija dok organizator ne objavi zvanične informacije.</p>`;
+  } else {
+    list.innerHTML = C.tickets.map((t, i) => {
+      const url = t.url || F.ticketUrl;
+      return ticketHTML({
+        alt: i % 2, tag: esc(t.day || 'LOWLIFE / PARTYLIFE'), big: esc(t.name),
+        rows: [...(t.price ? [['Cena', esc(t.price)]] : []), ['Izdanje', F.year]], perks: t.perks,
+        cta: t.soldOut === true ? '<span class="mono">Rasprodato</span>' : url ? `<a class="btn btn--lg" href="${esc(url)}" target="_blank" rel="noopener">Uzmi kartu <i aria-hidden="true">→</i></a>` : `<a class="btn btn--lg" data-cta href="#pratite">Prati najave <i aria-hidden="true">→</i></a>`,
+      });
+    }).join('');
   }
-  list.innerHTML = C.tickets.map((t, i) => {
-    const url = t.url || F.ticketUrl;
-    return `<article class="ticket ${i % 2 ? '' : 'ticket--o'}" data-reveal>
-      <div class="ticket__main"><div class="mono">${esc(t.day || 'LOWLIFE / PARTYLIFE')}</div><div class="big">${esc(t.name)}</div>
-        <div class="ticket__row">${t.price ? `<div><span class="mono">Cena</span><b>${esc(t.price)}</b></div>` : ''}<div><span class="mono">Izdanje</span><b>${F.year}</b></div></div>
-        ${t.perks?.length ? `<ul class="ticket__perks">${t.perks.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>` : ''}</div>
-      <div class="ticket__stub"><div class="barcode" aria-hidden="true"></div>
-        ${t.soldOut === true ? '<span class="mono">Rasprodato</span>' : url ? `<a class="btn btn--lg" href="${esc(url)}" target="_blank" rel="noopener">Uzmi kartu <i aria-hidden="true">→</i></a>` : `<a class="btn btn--lg" href="#pratite">Prati najave <i aria-hidden="true">→</i></a>`}</div></article>`;
-  }).join('');
+  pointerTilt(list, '.tkt', 5);
 }
 
 /* ======================= follow / info / faq / footer ======================= */
 function renderMisc() {
-  $('#socials').innerHTML = C.socials.map((s) => `<a class="slink" href="${s.url}" target="_blank" rel="noopener"><div><span>${esc(s.label)}</span><b>${esc(s.handle)}</b></div><i aria-hidden="true">↗</i></a>`).join('');
+  const s0 = C.socials[0], rest = C.socials.slice(1);
+  $('#socials').innerHTML = `<a class="badge" href="${s0.url}" target="_blank" rel="noopener" aria-label="Prati ${esc(s0.handle)} na ${esc(s0.label)}u (otvara se u novom tabu)">
+      <svg class="badge__ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="bp" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#bp" textLength="500" lengthAdjust="spacing">PRATI NAJAVE ✦ PRATI NAJAVE ✦ LOWLIFE / PARTYLIFE ✦ </textPath></text></svg>
+      <span class="badge__disc"><i aria-hidden="true">↗</i></span></a>
+    <p class="badge__h mono">${esc(s0.handle)}</p>`
+    + (rest.length ? `<ul class="badge__more">${rest.map((s) => `<li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.label)} ${esc(s.handle)} ↗</a></li>`).join('')}</ul>` : '');
   $('#footSocials').innerHTML = C.socials.map((s) => `<li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.label)} - ${esc(s.handle)} ↗</a></li>`).join('')
     + (F.contact?.email ? `<li><a href="mailto:${esc(F.contact.email)}">${esc(F.contact.email)}</a></li>` : '');
   if (C.partners.length) {
@@ -578,7 +650,22 @@ function heroMotion() {
       gsap.set(tiles, { y: 80, opacity: 0 });
       gsap.to(tiles, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power3.out', scrollTrigger: { trigger: '#l27Grid', start: 'top 88%', once: true } });
     }
+    const pols = $$('.pol');
+    if (pols.length) {
+      pols.forEach((p) => (p.style.transform = 'none'));
+      gsap.set(pols, { y: 150, opacity: 0 });
+      gsap.to(pols, { y: 0, opacity: 1, duration: 1, stagger: 0.14, ease: 'power3.out', scrollTrigger: { trigger: '.ut__stage', start: 'top 88%', once: true } });
+    }
+    const badge = $('.badge');
+    if (badge) {
+      gsap.set(badge, { scale: 0.6, rotate: -40, opacity: 0 });
+      gsap.to(badge, { scale: 1, rotate: 0, opacity: 1, duration: 1.1, ease: 'back.out(1.5)', scrollTrigger: { trigger: badge, start: 'top 90%', once: true } });
+    }
     if (ctx.conditions.desk) {
+      $$('.gal__col').forEach((col, i) => {
+        const v = [-70, 90, -40][i] || 0;
+        gsap.fromTo(col, { y: -v }, { y: v, ease: 'none', scrollTrigger: { trigger: '#galCols', start: 'top bottom', end: 'bottom top', scrub: true } });
+      });
       gsap.fromTo('.l27__year', { xPercent: 10 }, { xPercent: -14, ease: 'none', scrollTrigger: { trigger: '#lineup', start: 'top bottom', end: 'bottom top', scrub: true } });
       $$('[data-parallax]').forEach((el) => {
         const v = +el.dataset.parallax;
@@ -588,7 +675,7 @@ function heroMotion() {
         gsap.fromTo(el, { yPercent: -2.5 }, { yPercent: 2.5, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
       });
     }
-    return () => $$('[data-reveal],.mask>span,[data-parallax],.l27__li,.l27__year').forEach((e) => (e.style.cssText = ''));
+    return () => $$('[data-reveal],.mask>span,[data-parallax],.l27__li,.l27__year,.pol,.badge,.gal__col').forEach((e) => (e.style.cssText = ''));
   });
 }
 
@@ -623,7 +710,7 @@ function heroVideo() {
 function lifecycle() {
   document.addEventListener('visibilitychange', () => root.classList.toggle('paused', document.hidden));
   const io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('is-off', !e.isIntersecting)), { rootMargin: '80px' });
-  ['#marquee .marquee__track', '.stage__beams', '.hero__scroll span'].forEach((s) => $$(s).forEach((n) => io.observe(n)));
+  ['#marquee .marquee__track', '.stage__beams', '.hero__scroll span', '.tix__bg', '.follow__bg', '.badge__ring', '.l27__bg'].forEach((s) => $$(s).forEach((n) => io.observe(n)));
 }
 
 /* ======================= init ======================= */
@@ -631,7 +718,7 @@ function init() {
   applyState();
   renderEditions(); renderLineup27(); initCountdown();
   renderList(); bindList(); applyFilter();
-  renderGallery(); bindLightbox(); bindVideoModal(); renderClips();
+  renderGallery(); bindLightbox(); bindVideoModal(); renderClips(); cursorChip();
   renderAftermovie(); renderUtisci(); renderTickets(); renderMisc();
   paintScenes();
   if (archive.length) setPreview(archive[0].id); else $('#arhiva').hidden = true;

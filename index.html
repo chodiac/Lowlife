@@ -193,7 +193,7 @@
     </div>
     <div id="afterSlot"></div>
     <div class="seg gal__filter" id="galFilter" role="group" aria-label="Kategorije fotografija" hidden></div>
-    <ul class="gal__grid" id="galGrid"></ul>
+    <div class="gal__cols" id="galCols"><ul class="gal__col"></ul><ul class="gal__col"></ul><ul class="gal__col"></ul></div>
   </div>
 
   <div class="clipsec" id="klipovi">
@@ -221,9 +221,14 @@
 </section>
 
 <!-- ================= KARTE ================= -->
-<section class="sec sec--light tix" id="karte" data-nav="light">
+<section class="sec sec--dark tix" id="karte" data-nav="dark">
   <i class="edge" aria-hidden="true"></i>
-  <div class="wrap">
+  <div class="tix__bg" aria-hidden="true">
+    <div class="tix__row"><span>KARTE ✦ TICKETS ✦ ULAZNICE ✦ </span><span>KARTE ✦ TICKETS ✦ ULAZNICE ✦ </span></div>
+    <div class="tix__row tix__row--r"><span>KARTE ✦ TICKETS ✦ ULAZNICE ✦ </span><span>KARTE ✦ TICKETS ✦ ULAZNICE ✦ </span></div>
+    <div class="tix__row"><span>KARTE ✦ TICKETS ✦ ULAZNICE ✦ </span><span>KARTE ✦ TICKETS ✦ ULAZNICE ✦ </span></div>
+  </div>
+  <div class="wrap tix__in">
     <div class="tix__head" data-reveal>
       <p class="mono eyebrow">Karte · Izdanje <span data-year>2027</span></p>
       <h2 class="giant giant--md" id="tixTitle">USKORO...</h2>
@@ -235,18 +240,25 @@
 <!-- ================= PRATI NAJAVE ================= -->
 <section class="sec sec--ink follow" id="pratite" data-nav="dark">
   <i class="edge edge--light edge--rev" aria-hidden="true"></i>
+  <div class="follow__bg" aria-hidden="true"><i class="ring" style="--s:30vw;--d:0s"></i><i class="ring" style="--s:46vw;--d:-1.2s"></i><i class="ring" style="--s:62vw;--d:-2.4s"></i><i class="ring" style="--s:80vw;--d:-3.6s"></i></div>
   <div class="wrap follow__in">
-    <div data-reveal>
+    <div class="follow__copy" data-reveal>
       <p class="mono eyebrow">Prati najave</p>
-      <h2 class="h-xl">PRVI SAZNAJ.<br><span class="y">PRVI DOĐI.</span></h2>
-      <p class="lead">Datum, prva imena i karte biće objavljeni na zvaničnom Instagram profilu. Sajt ne beleži email adrese dok se ne poveže sa pravim servisom - ništa ne simuliramo.</p>
+      <h2 class="giant giant--md">PRVI SAZNAJ.<br><span class="y">PRVI DOĐI.</span></h2>
+      <ol class="steps">
+        <li><b>01</b><span>Zaprati zvanični profil <em>@lowlifepartylife</em></span></li>
+        <li><b>02</b><span>Uključi obaveštenja da ti ne promakne objava</span></li>
+        <li><b>03</b><span>Datum, prva imena i karte stižu prvo tamo</span></li>
+      </ol>
+      <p class="follow__fine">Sajt ne beleži email adrese dok se ne poveže sa pravim servisom - ništa ne simuliramo.</p>
     </div>
-    <div class="follow__links" id="socials" data-reveal></div>
+    <div class="follow__badge" id="socials" data-reveal></div>
   </div>
 </section>
 
 <!-- ================= INFO ================= -->
 <section class="sec sec--light info" id="info" data-nav="light">
+  <i class="edge" aria-hidden="true"></i>
   <div class="wrap">
     <p class="mono eyebrow" data-reveal>Info · Festivalski vodič</p>
     <h2 class="h-xl" data-reveal>PRE NEGO ŠTO<br>KRENEŠ.</h2>
