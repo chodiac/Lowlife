@@ -505,6 +505,21 @@ function footPulse() {
   foot.addEventListener('pointerleave', () => foot.classList.remove('is-pulse'));
 }
 
+/* ======================= hero video ======================= */
+function heroVideo() {
+  const v = $('#heroVideo'); if (!v) return;
+  const small = matchMedia('(max-width: 760px)').matches;
+  v.src = small ? 'assets/video/hero-540.mp4' : 'assets/video/hero-1080.mp4';
+  v.preload = 'auto';
+  if (FORCE === 'reduced') return;                       // mirna verzija: samo poster
+  v.addEventListener('playing', () => v.classList.add('is-on'), { once: true });
+  let inView = true;
+  const sync = () => { (inView && !document.hidden) ? v.play().catch(() => {}) : v.pause(); };
+  new IntersectionObserver((es) => { inView = es[0].isIntersecting; sync(); }, { threshold: 0 }).observe($('#top'));
+  document.addEventListener('visibilitychange', sync);
+  sync();
+}
+
 /* ======================= lifecycle / performance ======================= */
 function lifecycle() {
   document.addEventListener('visibilitychange', () => root.classList.toggle('paused', document.hidden));
@@ -523,7 +538,7 @@ function init() {
   if (archive.length) setPreview(archive[0].id); else $('#arhiva').hidden = true;
   fitTitle();
   new ResizeObserver(() => fitTitle()).observe($('#heroTitle'));
-  footPulse(); lifecycle();
+  footPulse(); lifecycle(); heroVideo();
   if (hasG) {
     heroMotion(); navTriggers();
     (document.fonts?.ready || Promise.resolve()).then(() => { fitTitle(); ScrollTrigger.refresh(); });

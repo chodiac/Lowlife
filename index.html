@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preload" as="image" href="assets/video/hero-poster.webp" fetchpriority="high">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -57,7 +58,7 @@
 
 <!-- ================= HERO + SIGNATURE SCROLL ================= -->
 <header class="stage" id="top" data-nav="dark">
-  <div class="stage__photo" id="heroPhoto"><div class="stage__photo-in" data-scene="crowd" data-seed="14" data-tone="orange"></div></div>
+  <div class="stage__photo" id="heroPhoto"><div class="stage__photo-in" data-scene="crowd" data-seed="14" data-tone="orange"><video class="herovid" id="heroVideo" muted loop playsinline preload="none" poster="assets/video/hero-poster.webp" aria-hidden="true" tabindex="-1"></video></div></div>
   <div class="stage__shade" id="stageShade" aria-hidden="true"></div>
   <div class="stage__beams" aria-hidden="true"><i></i><i></i><i></i></div>
 
@@ -81,7 +82,7 @@
   </div>
 
   <div class="statement" id="statement">
-    <p class="statement__kick mono">Noć u Kragujevcu · ilustrativni kadar</p>
+    <p class="statement__kick mono">Noć u Kragujevcu</p>
     <h2 class="statement__title" aria-label="Ovako izgleda LOWLIFE.">
       <span class="mask"><span>OVAKO</span></span>
       <span class="mask"><span>IZGLEDA</span></span>
