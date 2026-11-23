@@ -152,7 +152,7 @@ export const clips = [
 ];
 
 /* --------------------------------------------------------------------------
-   tickets — SAMO potvrđene opcije. Prazno = „Sledeća runda stiže.“
+   tickets — SAMO potvrđene opcije. Prazno = „Uskoro.“
    { id, name, price:'3.000 RSD' | null, day:'…' | null, perks:['…'], url:null|'…', soldOut:false }
    Nema izmišljenog broja preostalih karata.
    -------------------------------------------------------------------------- */

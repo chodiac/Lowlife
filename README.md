@@ -14,7 +14,7 @@ Animacije su uvek uključene (i kad OS traži smanjeno kretanje). `?motion=reduc
 | Datum / lokacija | `festivalConfig.dates`, `festivalConfig.venue` (+ `structuredData: true` za Event JSON-LD) |
 | Faza sajta | `festivalConfig.state`: `announce` → `lineup` → `sale` |
 | Ticketing link | `festivalConfig.ticketUrl` (CTA postaje „Uzmi kartu“ kad je `state:'sale'`) |
-| Kategorije i cene karata | `tickets[]` (prazno = „Sledeća runda stiže“) |
+| Kategorije i cene karata | `tickets[]` (prazno = „Uskoro“) |
 | Izvođači 2027 | `artists[]` sa `edition: 2027, status: 'confirmed'` |
 | Fotografije izvođača, opisi, linkovi | `artist.photo`, `artist.bio`, `artist.links` |
 | Raspored / satnice | `schedule[]` |
