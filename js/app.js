@@ -284,19 +284,13 @@ function openVideo(src, poster, opener) {
   lockScroll(true); vm.showModal(); vmV.play().catch(() => {});
 }
 
-/* ======================= aftermovie ======================= */
+/* ======================= aftermovie (samo kad postoji pravi snimak) ======================= */
 function renderAftermovie() {
-  const m = F.aftermovie, act = $('#afterAction');
-  if (m?.src) {
-    $('#afterEyebrow').textContent = `Aftermovie · ${m.year ?? ''}`.trim();
-    $('#afterTitle').innerHTML = esc(m.title || 'Aftermovie').toUpperCase();
-    $('#afterLead').textContent = 'Pusti zvuk samo ako želiš — video se pokreće tek na klik.';
-    if (m.poster) $('.after__bg').innerHTML = `<img src="${m.poster}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`;
-    act.innerHTML = `<button class="play" type="button" id="playBtn"><span class="play__ic"></span>Pusti aftermovie</button>`;
-    $('#playBtn').addEventListener('click', (e) => openVideo(m.src, m.poster, e.currentTarget));
-  } else {
-    act.innerHTML = `<span class="mono note-pill">Aftermovie: uskoro</span> <a class="btn btn--lg btn--ghost" href="#klipovi" style="margin-left:8px">Pogledaj klipove <i aria-hidden="true">↓</i></a>`;
-  }
+  const m = F.aftermovie, slot = $('#afterSlot');
+  if (!slot || !m?.src) return;
+  slot.innerHTML = `<div class="aftbanner">${m.poster ? `<img src="${m.poster}" alt="" loading="lazy">` : ''}
+    <button class="play" type="button" id="playBtn"><span class="play__ic"></span>${esc(m.title || 'Aftermovie')}${m.year ? ' · ' + m.year : ''}</button></div>`;
+  $('#playBtn').addEventListener('click', (e) => openVideo(m.src, m.poster, e.currentTarget));
 }
 
 /* ======================= klipovi (vertikalna traka) ======================= */
@@ -447,7 +441,7 @@ document.addEventListener('click', (e) => {
 
 function navTriggers() {
   const secs = $$('[data-nav]');
-  const linkFor = { festival: '#festival', lineup: '#lineup', arhiva: '#lineup', atmosfera: '#atmosfera', info: '#info', karte: '#karte' };
+  const linkFor = { festival: '#festival', lineup: '#lineup', arhiva: '#lineup', galerija: '#galerija', info: '#info', karte: '#karte' };
   secs.forEach((s) => ScrollTrigger.create({
     trigger: s, start: 'top 40px', end: 'bottom 40px',
     onToggle: (st) => {
