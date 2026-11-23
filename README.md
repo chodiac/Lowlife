@@ -41,3 +41,7 @@ Open Graph slika `assets/og.jpg` je privremena grafika, zameniti.
 - **Galerija:** `assets/photos/<id>.webp` (+ `-sm`), registar `gallery[]` u `config.js` (kategorija, alt, `year`/`credit` = null dok se ne potvrde). Filter po kategorijama se prikazuje sam kad ima bar 2 kategorije sa bar 2 fotografije.
 - **Klipovi:** `clips[]` u `config.js`, vertikalni 720×1280 sa zvukom (`assets/video/klip-N.mp4`). U traci se vrte bez zvuka samo dok su na ekranu; klik otvara prozor sa zvukom.
 - **Hero video:** `assets/video/hero-1080.mp4` (desktop) i `hero-540.mp4` (telefon, zapravo 720p), isečak 1:07–1:21 iz DJI_0019.MP4 (original nije u repou).
+
+## Lineup 2027 i odbrojavanje
+- **Novo ime:** u `artists[]` dodaj `a('Ime', 1, { edition: 2027, status: 'confirmed', photo: 'assets/artists/ime.webp' })` (fotografija je opciona, bez nje ide tipografski poster). Ime zauzima prvo prazno mesto, a prazna mesta (`festivalConfig.lineupSlots`, samo vizuelno) se smanjuju. Naslov postaje „LINEUP 2027".
+- **Odbrojavanje:** `festivalConfig.countdown.target` = ISO datum objave (npr. `'2027-02-01T20:00:00+01:00'`). Dok je `null`, cifre ostaju „--" (nema izmišljenog datuma). Kad datum prođe, prikazuje se `doneLabel`.

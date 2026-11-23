@@ -80,11 +80,44 @@ function renderEditions() {
 
 /* ======================= lineup 2027 ======================= */
 function renderLineup27() {
-  if (!confirmed27.length) return;
-  $('#lineup27Title').innerHTML = '<span class="mask"><span>LINEUP</span></span> <span class="mask"><span class="o">' + F.year + '</span></span>';
-  const box = $('#lineup27List'); box.hidden = false;
-  box.innerHTML = confirmed27.map((x) => `<li>${esc(x.name)}</li>`).join('<li aria-hidden="true">/</li>');
-  $('.lineup27 .lead').textContent = 'Potvrđena imena izdanja ' + F.year + '. Raspored po danima i satnice stižu kad ih organizator objavi.';
+  const grid = $('#l27Grid'), slots = F.lineupSlots ?? 8;
+  const on = confirmed27.map((x) => `<li class="l27__li"><button type="button" class="slot slot--on" data-id="${x.id}" aria-haspopup="dialog" aria-label="Otvori: ${esc(x.name)}">${posterHTML(x, artists.indexOf(x))}</button></li>`);
+  const empty = Array.from({ length: Math.max(0, slots - confirmed27.length) }, (_, i) =>
+    `<li class="l27__li" aria-hidden="true"><div class="slot slot--empty" style="--d:${(i * 0.55).toFixed(2)}s"><i class="slot__scan"></i><span class="slot__q">?</span><span class="slot__tag mono">Uskoro</span></div></li>`);
+  grid.innerHTML = on.concat(empty).join('');
+  if (confirmed27.length) {
+    $('#lineup27Title').innerHTML = '<span class="mask"><span>LINEUP</span></span> <span class="mask"><span class="o">' + F.year + '</span></span>';
+    $('.lineup27 .lead').textContent = 'Potvrđena imena izdanja ' + F.year + '. Nova imena stižu redom, a raspored po danima i satnice kad ih organizator objavi.';
+  }
+  grid.addEventListener('click', (e) => { const b = e.target.closest('.slot--on'); if (b) openArtist(b.dataset.id, b); });
+  // blagi nagib prema kursoru (samo miš, samo animirani režim)
+  if (FORCE !== 'reduced' && matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    let raf = 0, cur = null, px = 0, py = 0;
+    const apply = () => { raf = 0; if (!cur) return; const r = cur.getBoundingClientRect(); const nx = (px - r.left) / r.width - 0.5, ny = (py - r.top) / r.height - 0.5; cur.style.setProperty('--ry', (nx * 14).toFixed(2) + 'deg'); cur.style.setProperty('--rx', (-ny * 14).toFixed(2) + 'deg'); };
+    grid.addEventListener('pointermove', (e) => { const t = e.target.closest('.slot'); if (cur && cur !== t) { cur.style.setProperty('--rx', '0deg'); cur.style.setProperty('--ry', '0deg'); } cur = t; px = e.clientX; py = e.clientY; if (cur && !raf) raf = requestAnimationFrame(apply); });
+    grid.addEventListener('pointerleave', () => { if (cur) { cur.style.setProperty('--rx', '0deg'); cur.style.setProperty('--ry', '0deg'); cur = null; } });
+  }
+}
+
+/* odbrojavanje: radi samo kad config.countdown.target postoji (pravi datum); inače cifre ostaju „--“ */
+function initCountdown() {
+  const el = $('#l27Count'); if (!el) return;
+  const cfg = F.countdown || {}, lab = $('#cdLab'), t = cfg.target ? Date.parse(cfg.target) : NaN;
+  const set = (k, v) => { const b = $(`[data-u="${k}"]`, el); const s = String(v).padStart(2, '0'); if (b.textContent !== s) { b.textContent = s; b.classList.remove('tick'); void b.offsetWidth; b.classList.add('tick'); } };
+  if (!Number.isFinite(t)) { lab.textContent = cfg.pending || 'Datum objave prvih imena: uskoro'; return; }
+  let timer = 0, vis = true;
+  const tick = () => {
+    const ms = t - Date.now();
+    if (ms <= 0) { el.dataset.state = 'done'; $$('.cd__u', el).forEach((n) => (n.hidden = true)); lab.textContent = cfg.doneLabel || 'Prva imena su objavljena.'; stop(); return; }
+    const s = Math.floor(ms / 1000);
+    set('d', Math.floor(s / 86400)); set('h', Math.floor(s % 86400 / 3600)); set('m', Math.floor(s % 3600 / 60)); set('s', s % 60);
+    el.dataset.state = 'live'; lab.textContent = cfg.label || '';
+  };
+  const stop = () => { clearInterval(timer); timer = 0; };
+  const go = () => { if (!timer && vis && !document.hidden) { tick(); timer = setInterval(tick, 1000); } };
+  new IntersectionObserver((es) => { vis = es[0].isIntersecting; vis ? go() : stop(); }).observe(el);
+  document.addEventListener('visibilitychange', () => (document.hidden ? stop() : go()));
+  tick();
 }
 
 /* ======================= archive list ======================= */
@@ -132,7 +165,7 @@ function posterHTML(x, i, big = false) {
   return `<div class="poster" style="--pb:${pb};--pf:${pf};--pa:${pa}">
     <div class="poster__yr"><span>LOWLIFE ${x.edition}</span><span>${x.day ? dayLabel(x.day).toUpperCase() : ''}</span></div>
     <div class="poster__name">${esc(x.name)}</div>
-    <div class="poster__sub">${dayDate(x) || 'Arhiva izdanja ' + x.edition}</div>
+    <div class="poster__sub">${dayDate(x) || (x.status === 'archive' ? 'Arhiva izdanja ' + x.edition : 'Izdanje ' + x.edition)}</div>
   </div>`;
 }
 
@@ -189,7 +222,7 @@ bindDialog(panel, () => { A.opener?.focus?.({ preventScroll: true }); });
 function openArtist(id, opener) {
   const x = byId(id); if (!x) return;
   A.opener = opener;
-  const i = archive.indexOf(x);
+  const i = artists.indexOf(x);
   const links = Object.entries(x.links || {}).filter(([, u]) => u);
   const LAB = { spotify: 'Spotify', youtube: 'YouTube', instagram: 'Instagram', apple: 'Apple Music', soundcloud: 'SoundCloud', tiktok: 'TikTok' };
   panel.innerHTML = `
@@ -201,7 +234,7 @@ function openArtist(id, opener) {
       ${x.bio ? `<p class="lead">${esc(x.bio)}</p>` : `<p class="panel__note">Kratak provereni opis izvođača biće dodat kad ga potvrdimo. Nastup: LOWLIFE ${x.edition}${x.day ? ', ' + dayLabel(x.day).toLowerCase() : ''}.</p>`}
       ${links.length ? `<div class="panel__links">${links.map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${LAB[k] || esc(k)} ↗</a>`).join('')}</div>` : `<p class="mono" style="color:var(--mid)">Provereni linkovi ka muzici uskoro</p>`}
       <button type="button" class="btn btn--ink" id="panelFav" aria-pressed="${favs.has(x.id)}">${favs.has(x.id) ? '★ U mom lineupu' : '☆ Dodaj u Moj lineup'}</button>
-      <p class="mono" style="color:var(--mid)">Arhiva izdanja ${x.edition}. Ne odnosi se na program ${F.year}.</p>
+      <p class="mono" style="color:var(--mid)">${x.status === 'archive' ? `Arhiva izdanja ${x.edition}. Ne odnosi se na program ${F.year}.` : `Izdanje ${x.edition}. Potvrđeno.`}</p>
     </div>`;
   $('#panelX', panel).addEventListener('click', () => panel.close());
   const fb = $('#panelFav', panel);
@@ -539,7 +572,14 @@ function heroMotion() {
       prep(spans, { yPercent: 112 });
       gsap.to(spans, { yPercent: 0, duration: 1.05, stagger: 0.09, ease: 'power4.out', scrollTrigger: { trigger: parent, start: 'top 88%', once: true } });
     });
+    const tiles = $$('.l27__li');
+    if (tiles.length) {
+      tiles.forEach((t) => (t.style.transform = 'none'));
+      gsap.set(tiles, { y: 80, opacity: 0 });
+      gsap.to(tiles, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power3.out', scrollTrigger: { trigger: '#l27Grid', start: 'top 88%', once: true } });
+    }
     if (ctx.conditions.desk) {
+      gsap.fromTo('.l27__year', { xPercent: 10 }, { xPercent: -14, ease: 'none', scrollTrigger: { trigger: '#lineup', start: 'top bottom', end: 'bottom top', scrub: true } });
       $$('[data-parallax]').forEach((el) => {
         const v = +el.dataset.parallax;
         gsap.fromTo(el, { y: -v }, { y: v, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
@@ -548,7 +588,7 @@ function heroMotion() {
         gsap.fromTo(el, { yPercent: -2.5 }, { yPercent: 2.5, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
       });
     }
-    return () => $$('[data-reveal],.mask>span,[data-parallax]').forEach((e) => (e.style.cssText = ''));
+    return () => $$('[data-reveal],.mask>span,[data-parallax],.l27__li,.l27__year').forEach((e) => (e.style.cssText = ''));
   });
 }
 
@@ -589,7 +629,7 @@ function lifecycle() {
 /* ======================= init ======================= */
 function init() {
   applyState();
-  renderEditions(); renderLineup27();
+  renderEditions(); renderLineup27(); initCountdown();
   renderList(); bindList(); applyFilter();
   renderGallery(); bindLightbox(); bindVideoModal(); renderClips();
   renderAftermovie(); renderUtisci(); renderTickets(); renderMisc();

@@ -219,8 +219,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .lineup27 .giant{display:flex;flex-direction:column;align-items:flex-start;font-size:clamp(70px,20vw,380px)}
 .lineup27 .giant .o{color:transparent;-webkit-text-stroke:3px var(--lav)}
 .lineup27__row{display:flex;flex-wrap:wrap;gap:28px 60px;align-items:center;justify-content:space-between;margin-top:clamp(30px,5vw,70px);border-top:2px solid var(--lav);padding-top:28px}
-.l27list{display:flex;flex-wrap:wrap;gap:10px;flex:1 1 100%}
-.l27list li{font:900 clamp(40px,6vw,100px)/1 var(--display);text-transform:uppercase}
 
 /* ---------- ARHIVA ---------- */
 .archive__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px}
@@ -508,3 +506,38 @@ dialog::backdrop{background:var(--ink)}
 .aftbanner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .aftbanner .play{position:absolute;left:clamp(16px,3vw,40px);bottom:clamp(16px,3vw,40px)}
 .clipsec{padding-top:clamp(56px,8vw,120px)}
+
+/* ---------- LINEUP 2027: imersivna bina za imena koja tek stižu ---------- */
+.lineup27{overflow:hidden;position:relative}
+.l27__in{position:relative;z-index:1}
+.l27__bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.l27__year{position:absolute;right:-2vw;top:50%;translate:0 -50%;font:900 56vw/.8 var(--display);color:transparent;-webkit-text-stroke:2px var(--deep);white-space:nowrap;user-select:none}
+.l27__beam{position:absolute;top:-10%;width:24vw;height:130%;background:var(--deep);transform-origin:50% 0;clip-path:polygon(46% 0,54% 0,100% 100%,0 100%)}
+.l27__beam.b1{left:6%;animation:sweep 8s ease-in-out infinite alternate}
+.l27__beam.b2{left:42%;background:var(--ink);animation:sweep 10s ease-in-out -4s infinite alternate-reverse}
+.l27__beam.b3{left:76%;animation:sweep 7s ease-in-out -2s infinite alternate}
+.is-off .l27__beam,.l27__bg.is-off .l27__beam{animation-play-state:paused}
+
+.cd{display:flex;flex-wrap:wrap;gap:clamp(8px,1.4vw,18px);margin-top:clamp(28px,4vw,56px)}
+.cd__u{background:var(--ink);color:var(--lav);padding:14px 18px 12px;min-width:clamp(80px,11vw,170px);display:grid;gap:6px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+.cd__u b{font:900 clamp(46px,7.5vw,128px)/.85 var(--display);font-variant-numeric:tabular-nums;display:block;overflow:hidden}
+.cd[data-state=pending] .cd__u b{color:var(--mute)}
+.cd__u b.tick{animation:tick .45s var(--ease)}
+@keyframes tick{from{transform:translateY(-60%)}to{transform:none}}
+.cd__u span{font:600 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.cd__lab{flex:1 1 100%;margin-top:4px}
+
+.l27__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(150px,17vw,250px),1fr));gap:clamp(10px,1.4vw,20px);margin-top:clamp(40px,6vw,90px);perspective:1100px}
+.l27__li:nth-child(even){margin-top:clamp(0px,3.5vw,56px)}
+.slot{position:relative;display:block;width:100%;aspect-ratio:4/5;background:var(--ink);overflow:hidden;clip-path:polygon(0 9%,26% 0,100% 0,100% 100%,0 100%);
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .3s var(--ease);will-change:transform;text-align:left}
+.slot--on .poster{position:absolute;inset:0}
+.slot--on:focus-visible{outline-offset:-4px}
+.slot--empty{display:grid;place-items:center}
+.slot__q{font:900 clamp(110px,14vw,230px)/.8 var(--display);color:var(--deep);-webkit-text-stroke:2px var(--mute)}
+.slot__tag{position:absolute;left:0;bottom:0;background:var(--mute);color:var(--ink);padding:8px 14px 8px 12px;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}
+.slot__scan{position:absolute;inset:0;border-top:3px solid var(--mute);animation:scan 3.6s linear infinite;animation-delay:var(--d,0s)}
+@keyframes scan{from{transform:translateY(-100%)}to{transform:translateY(100%)}}
+@media (hover:hover){.slot--empty:hover .slot__q{color:var(--mid)}}
+.rm .l27__beam,.rm .slot__scan{animation:none}
+@media (max-width:760px){.l27__grid{grid-template-columns:repeat(2,1fr)}.l27__li:nth-child(even){margin-top:24px}.l27__year{font-size:90vw}.cd__u{min-width:calc(50% - 6px);flex:1 1 calc(50% - 6px)}}

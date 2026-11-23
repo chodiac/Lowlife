@@ -129,12 +129,26 @@
 
 <!-- ================= LINEUP 2027 ================= -->
 <section class="sec sec--orange lineup27" id="lineup" data-nav="orange">
-  <div class="wrap">
+  <div class="l27__bg" aria-hidden="true">
+    <span class="l27__year">2027</span>
+    <i class="l27__beam b1"></i><i class="l27__beam b2"></i><i class="l27__beam b3"></i>
+  </div>
+  <div class="wrap l27__in">
     <p class="mono eyebrow" data-reveal>Lineup · Izdanje <span data-year>2027</span></p>
     <h2 class="giant" id="lineup27Title"><span class="mask"><span>PRVA</span></span> <span class="mask"><span>IMENA</span></span> <span class="mask"><span class="o">USKORO.</span></span></h2>
+
+    <div class="cd" id="l27Count" role="timer" aria-label="Odbrojavanje do objave prvih imena" data-state="pending" data-reveal>
+      <div class="cd__u"><b data-u="d">--</b><span>dana</span></div>
+      <div class="cd__u"><b data-u="h">--</b><span>sati</span></div>
+      <div class="cd__u"><b data-u="m">--</b><span>min</span></div>
+      <div class="cd__u"><b data-u="s">--</b><span>sek</span></div>
+      <p class="cd__lab mono" id="cdLab">Datum objave prvih imena: uskoro</p>
+    </div>
+
+    <ul class="l27__grid" id="l27Grid" aria-label="Izvođači izdanja 2027"></ul>
+
     <div class="lineup27__row" data-reveal>
-      <p class="lead">Dok organizator ne objavi prve izvođače, ovde ostaje prazna bina. Čim imena budu potvrđena, pojaviće se na ovom mestu - i na zvaničnom profilu.</p>
-      <div id="lineup27List" class="l27list" hidden></div>
+      <p class="lead">Dok organizator ne objavi prve izvođače, bina ostaje prazna. Svako novo ime pojaviće se na jednom od ovih mesta, a prvo na zvaničnom profilu.</p>
       <a class="btn btn--ink btn--lg" data-cta href="#pratite">Prati najave <i aria-hidden="true">→</i></a>
     </div>
   </div>

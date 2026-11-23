@@ -25,6 +25,10 @@ export const festivalConfig = {
   contact: null,                   // { email:'…', phone:'…' }
   aftermovie: null,                // { src:'assets/aftermovie.mp4', poster:'assets/aftermovie.jpg', title:'Aftermovie', year:2025 }
   structuredData: false,           // true tek kad su datum + lokacija potvrđeni
+  /* Odbrojavanje do objave prvih imena. target = ISO datum, npr. '2027-02-01T20:00:00+01:00'.
+     null = bez odbrojavanja (cifre ostaju „--“, nema izmišljenog datuma). */
+  countdown: { target: null, pending: 'Datum objave prvih imena: uskoro', label: 'do objave prvih imena', doneLabel: 'Vreme je. Prva imena su na zvaničnom profilu.' },
+  lineupSlots: 8,                  // koliko praznih mesta se prikazuje dok se imena ne objave (samo vizuelno)
 };
 
 /* --------------------------------------------------------------------------
