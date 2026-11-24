@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LOWLIFE / PARTYLIFE - Festival, Kragujevac · 2027</title>
-<meta name="description" content="LOWLIFE / PARTYLIFE - festival hip-hopa, trapa i alternative iz Kragujevca. Izdanje 2027: datum, lineup i karte uskoro. Pogledaj arhivu izvođača i atmosferu.">
+<meta name="description" content="LOWLIFE / PARTYLIFE - festival hip-hopa, trapa i alternative iz Kragujevca. Izdanje 2027: datum, lineup i karte uskoro. Pogledaj arhivu izvođača, galeriju i klipove.">
 <meta name="theme-color" content="#04010a">
 <script>document.documentElement.classList.add("js")</script>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -30,10 +30,10 @@
 <nav class="nav" id="nav" aria-label="Glavna navigacija" data-theme="dark">
   <a class="nav__logo" href="#top" aria-label="LOWLIFE - na vrh"><span class="mark" aria-hidden="true"></span><b>LOWLIFE</b></a>
   <ul class="nav__links">
-    <li><a href="#festival">Festival</a></li>
+    <li><a href="festival.html">Festival</a></li>
     <li><a href="#lineup">Lineup</a></li>
-    <li><a href="#galerija">Galerija</a></li>
-    <li><a href="#info">Info</a></li>
+    <li><a href="galerija.html">Galerija</a></li>
+    <li><a href="info.html">Info</a></li>
     <li><a href="#karte">Karte</a></li>
   </ul>
   <a class="btn btn--sm nav__cta" data-cta href="#pratite">Prati najave</a>
@@ -42,10 +42,10 @@
 
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Meni" hidden>
   <ul class="menu__links">
-    <li><a href="#festival"><i>01</i>Festival</a></li>
+    <li><a href="festival.html"><i>01</i>Festival</a></li>
     <li><a href="#lineup"><i>02</i>Lineup</a></li>
-    <li><a href="#galerija"><i>03</i>Galerija</a></li>
-    <li><a href="#info"><i>04</i>Info</a></li>
+    <li><a href="galerija.html"><i>03</i>Galerija</a></li>
+    <li><a href="info.html"><i>04</i>Info</a></li>
     <li><a href="#karte"><i>05</i>Karte</a></li>
   </ul>
   <div class="menu__foot">
@@ -75,7 +75,7 @@
       <p class="hero__lead">Tvoja ekipa. Tvoj zvuk. Noć koja ostaje.</p>
       <div class="hero__cta">
         <a class="btn btn--lg" data-cta href="#pratite">Prati najave <i aria-hidden="true">→</i></a>
-        <a class="btn btn--lg btn--ghost" href="#galerija">Oseti atmosferu</a>
+        <a class="btn btn--lg btn--ghost" href="galerija.html">Oseti atmosferu</a>
       </div>
     </div>
     <p class="hero__scroll" aria-hidden="true"><span></span>Skroluj</p>
@@ -91,33 +91,6 @@
     <div class="statement__bg" data-scene="crowd" data-seed="14" data-tone="orange"></div>
   </div>
 </header>
-
-<!-- ================= FESTIVAL ================= -->
-<section class="sec sec--light" id="festival" data-nav="light">
-  <i class="edge edge--ink" aria-hidden="true"></i>
-  <div class="wrap">
-    <div class="fest">
-      <div class="fest__left">
-        <div class="fest__head" data-reveal>
-          <p class="mono eyebrow">Festival · Kragujevac</p>
-          <h2 class="h-xl">Grad se <em>gasi.</em><br>Bina se <em>pali.</em></h2>
-        </div>
-        <div class="fest__txt" data-reveal>
-          <p class="lead">LOWLIFE / PARTYLIFE je noćni festival domaće scene - hip-hop, trap i alternativa - koji se prvi put održao u Kragujevcu 2025. godine. Dve večeri, više od trideset izvođača i publika koja zna reči.</p>
-          <p>Ovo je najava izdanja <b data-year>2027</b>. Sve što još nije potvrđeno ovde piše „uskoro“ - bez izmišljenih datuma, cena i brojača. Ispod je ono što je već istorija.</p>
-        </div>
-        <dl class="fest__stats" data-reveal>
-          <div><dt>2</dt><dd>izdanja<br>2025. i 2026.</dd></div>
-          <div><dt>30+</dt><dd>domaćih izvođača<br>na prvom izdanju</dd></div>
-          <div><dt>2</dt><dd>večeri<br>do ranih jutarnjih sati</dd></div>
-        </dl>
-      </div>
-      <figure class="fest__photo" data-parallax="-30"><div class="frame frame--l" data-photo="live-3" data-pos="50% 30%" data-sizes="(max-width:1000px) 90vw, 40vw"></div><figcaption class="mono cap">Foto: LOWLIFE arhiva</figcaption></figure>
-    </div>
-
-    <div class="editions" id="editions" aria-label="Izdanja festivala"></div>
-  </div>
-</section>
 
 <!-- ================= MARQUEE ================= -->
 <div class="marquee" id="marquee" aria-hidden="true">
@@ -135,7 +108,7 @@
   </div>
   <div class="wrap l27__in">
     <p class="mono eyebrow" data-reveal>Lineup · Izdanje <span data-year>2027</span></p>
-    <h2 class="giant" id="lineup27Title"><span class="mask"><span>PRVA</span></span> <span class="mask"><span>IMENA</span></span> <span class="mask"><span class="o">USKORO.</span></span></h2>
+    <h2 class="giant l27__title" id="lineup27Title"><span class="mask"><span>PRVA</span></span> <span class="mask"><span>IMENA</span></span> <span class="mask"><span class="o">USKORO.</span></span></h2>
 
     <div class="cd" id="l27Count" role="timer" aria-label="Odbrojavanje do objave prvih imena" data-state="pending" data-reveal>
       <div class="cd__u"><b data-u="d">--</b><span>dana</span></div>
@@ -183,39 +156,6 @@
   </div>
 </section>
 
-<!-- ================= GALERIJA I KLIPOVI ================= -->
-<section class="sec sec--dark gal" id="galerija" data-nav="dark">
-  <i class="edge" aria-hidden="true"></i>
-  <div class="wrap">
-    <h2 class="gal__title" data-reveal>GALERIJA <span class="y">I KLIPOVI.</span></h2>
-    <div id="afterSlot"></div>
-    <div class="gal__cols" id="galCols"><ul class="gal__col"></ul><ul class="gal__col"></ul><ul class="gal__col"></ul></div>
-  </div>
-
-  <div class="clipsec" id="klipovi">
-    <div class="wrap">
-      <div class="clips__head">
-        <h3 class="h-md" data-reveal>Klipovi</h3>
-        <div class="clips__nav" data-reveal>
-          <button type="button" class="lb__nav clips__b" id="clipsPrev" aria-label="Prethodni klip">←</button>
-          <button type="button" class="lb__nav clips__b" id="clipsNext" aria-label="Sledeći klip">→</button>
-        </div>
-      </div>
-      <p class="mono note clips__note" data-reveal>Prevuci ili koristi strelice. Klik na klip ga otvara sa zvukom.</p>
-    </div>
-    <ul class="clips__track" id="clipsTrack" aria-label="Video klipovi"></ul>
-  </div>
-</section>
-
-<!-- ================= UTISCI ================= -->
-<section class="sec sec--yellow utisci" id="utisci" data-nav="yellow">
-  <i class="edge edge--dark edge--rev" aria-hidden="true"></i>
-  <div class="wrap">
-    <p class="mono eyebrow" data-reveal>Utisci publike</p>
-    <div id="utisciBody"></div>
-  </div>
-</section>
-
 <!-- ================= KARTE ================= -->
 <section class="sec sec--dark tix" id="karte" data-nav="dark">
   <i class="edge" aria-hidden="true"></i>
@@ -252,20 +192,6 @@
   </div>
 </section>
 
-<!-- ================= INFO ================= -->
-<section class="sec sec--light info" id="info" data-nav="light">
-  <i class="edge" aria-hidden="true"></i>
-  <div class="wrap">
-    <p class="mono eyebrow" data-reveal>Info · Festivalski vodič</p>
-    <h2 class="h-xl" data-reveal>PRE NEGO ŠTO<br>KRENEŠ.</h2>
-    <div class="info__grid" id="infoGrid"></div>
-    <div class="faq" id="faq">
-      <h3 class="h-md" data-reveal>Brza pitanja</h3>
-      <div class="faq__list" id="faqList"></div>
-    </div>
-  </div>
-</section>
-
 </main>
 
 <!-- ================= FOOTER ================= -->
@@ -278,7 +204,7 @@
       <div><span class="mark mark--lg" aria-hidden="true"></span><p class="mono">LOWLIFE / PARTYLIFE</p><p class="foot__sm">Festival iz Kragujevca.<br>Izdanje <span data-year>2027</span> - datum uskoro.</p></div>
       <div><p class="mono">Kanali</p><ul id="footSocials"></ul></div>
       <div><p class="mono">Linkovi</p><ul>
-        <li><a href="#festival">Festival</a></li><li><a href="#arhiva">Arhiva izvođača</a></li><li><a href="#galerija">Galerija</a></li><li><a href="#karte">Karte</a></li><li><a href="#info">Info i FAQ</a></li></ul></div>
+        <li><a href="festival.html">Festival</a></li><li><a href="#arhiva">Arhiva izvođača</a></li><li><a href="galerija.html">Galerija</a></li><li><a href="#karte">Karte</a></li><li><a href="info.html">Info i FAQ</a></li></ul></div>
       <div id="footPartners" hidden><p class="mono">Partneri</p><ul id="footPartnersList"></ul></div>
     </div>
     <div class="foot__base"><span class="mono">© LOWLIFE / PARTYLIFE · Kragujevac · Fotografije i klipovi: LOWLIFE arhiva.</span><a href="#top" class="mono toplink" id="toTop">Na vrh ↑</a></div>
@@ -290,18 +216,6 @@
 
 <!-- Dialogs -->
 <dialog class="panel" id="panel" aria-labelledby="panelName"></dialog>
-<dialog class="lightbox" id="lightbox" aria-label="Galerija">
-  <button class="lb__close" id="lbClose" aria-label="Zatvori">✕</button>
-  <button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Prethodna fotografija">←</button>
-  <figure class="lb__fig" id="lbFig"></figure>
-  <button class="lb__nav lb__nav--next" id="lbNext" aria-label="Sledeća fotografija">→</button>
-  <p class="lb__count mono" id="lbCount" aria-live="polite"></p>
-</dialog>
-<dialog class="videomodal" id="videoModal" aria-label="Aftermovie">
-  <button class="lb__close" id="vmClose" aria-label="Zatvori video">✕</button>
-  <video id="vmVideo" controls playsinline preload="none"></video>
-</dialog>
-
 <noscript><p style="padding:20px;background:#f5f5ff;color:#04010a;position:relative;z-index:99">Za potpun doživljaj uključi JavaScript. Zvanični kanal: instagram.com/lowlifepartylife</p></noscript>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

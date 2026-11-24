@@ -43,15 +43,17 @@ function paintScenes(scope = document) {
 /* ======================= state-driven copy ======================= */
 function applyState() {
   $$('[data-year]').forEach((n) => (n.textContent = F.year));
+  const cnt = { photos: C.gallery.length, clips: C.clips.length };
+  $$('[data-n]').forEach((n) => (n.textContent = cnt[n.dataset.n] ?? ''));
   const chip = $('[data-edition-chip]');
-  chip.textContent = F.dates ? `Izdanje ${F.year} · ${F.dates.label}` : `Izdanje ${F.year} · Datum uskoro`;
+  if (chip) chip.textContent = F.dates ? `Izdanje ${F.year} · ${F.dates.label}` : `Izdanje ${F.year} · Datum uskoro`;
   $$('[data-cta]').forEach((a) => {
     if (sale && F.ticketUrl) {
       a.firstChild.textContent = 'Uzmi kartu ';
       a.href = F.ticketUrl; a.target = '_blank'; a.rel = 'noopener';
     }
   });
-  if (sale) $('#tixTitle').innerHTML = 'UZMI<br>KARTU.';
+  if (sale && $('#tixTitle')) $('#tixTitle').innerHTML = 'UZMI<br>KARTU.';
   if (F.siteUrl) {
     const l = document.createElement('link'); l.rel = 'canonical'; l.href = F.siteUrl; document.head.append(l);
   }
@@ -68,7 +70,8 @@ function applyState() {
 
 /* ======================= editions ======================= */
 function renderEditions() {
-  $('#editions').innerHTML = C.editions.map((e) => `
+  const ed = $('#editions'); if (!ed) return;
+  ed.innerHTML = C.editions.map((e) => `
     <article class="ed ${e.status === 'upcoming' ? 'ed--next' : ''}" data-reveal>
       <span class="mono ed__tag">${e.status === 'upcoming' ? 'Sledeće izdanje' : 'Arhiva'}</span>
       <h3 class="ed__y">${e.year}</h3>
@@ -81,6 +84,7 @@ function renderEditions() {
 /* ======================= lineup 2027 ======================= */
 function renderLineup27() {
   const grid = $('#l27Grid'), slots = F.lineupSlots ?? 8;
+  if (!grid) return;
   const on = confirmed27.map((x) => `<li class="l27__li"><button type="button" class="slot slot--on" data-id="${x.id}" aria-haspopup="dialog" aria-label="Otvori: ${esc(x.name)}">${posterHTML(x, artists.indexOf(x))}</button></li>`);
   const empty = Array.from({ length: Math.max(0, slots - confirmed27.length) }, (_, i) =>
     `<li class="l27__li" aria-hidden="true"><div class="slot slot--empty" style="--d:${(i * 0.55).toFixed(2)}s"><i class="slot__scan"></i><span class="slot__q">?</span><span class="slot__tag mono">Uskoro</span></div></li>`);
@@ -217,7 +221,7 @@ function bindDialog(dlg, onClose) {
   });
 }
 const panel = $('#panel');
-bindDialog(panel, () => { A.opener?.focus?.({ preventScroll: true }); });
+if (panel) bindDialog(panel, () => { A.opener?.focus?.({ preventScroll: true }); });
 
 function openArtist(id, opener) {
   const x = byId(id); if (!x) return;
@@ -386,37 +390,6 @@ function renderClips() {
   track.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
 }
 
-/* ======================= utisci ======================= */
-function renderUtisci() {
-  const T = C.testimonials, body = $('#utisciBody');
-  if (T.length) {
-    body.innerHTML = `<h2 class="giant giant--md" data-reveal>UTISCI.</h2><div class="quotes">` + T.map((t) => `<figure class="quote" data-reveal><blockquote><q>${esc(t.quote)}</q></blockquote><figcaption><cite>${esc(t.author)}</cite>${t.year ? ' <span class="mono">' + t.year + '</span>' : ''}</figcaption></figure>`).join('') + '</div>';
-    return;
-  }
-  const ig = C.socials[0];
-  body.innerHTML = `<div class="ut">
-    <div class="ut__copy" data-reveal>
-      <h2 class="giant">TVOJ<br>LOWLIFE<br><span class="o">TRENUTAK.</span></h2>
-      <p class="lead">Imaš kadar, utisak ili priču sa festivala? Pošalji ili označi zvanični profil - uz tvoju dozvolu objavljujemo ime i fotografiju ovde.</p>
-      <div class="ut__cta"><a class="btn btn--ink btn--lg" href="${ig.url}" target="_blank" rel="noopener">${esc(ig.handle)} ↗</a><a class="btn btn--lg btn--ghost" href="#galerija">Pogledaj galeriju</a></div>
-    </div>
-    <div class="ut__stage" id="utStage" aria-hidden="true">
-      <figure class="pol pol--1" style="--r:-7deg;--d:26"><div class="pol__img" data-photo="crowd-1" data-pos="62% 50%" data-sizes="(max-width:1000px) 60vw, 26vw"></div><figcaption class="mono">#lowlife</figcaption></figure>
-      <figure class="pol pol--2" style="--r:5deg;--d:14"><div class="pol__img" data-photo="hat" data-pos="55% 40%" data-sizes="(max-width:1000px) 60vw, 26vw"></div><figcaption class="mono">tvoj kadar</figcaption>
-        <span class="vf"><i></i><i></i><i></i><i></i><b class="mono">● Snima</b></span></figure>
-      <figure class="pol pol--3" style="--r:-3deg;--d:36"><div class="pol__img" data-photo="crowd-2" data-pos="36% 40%" data-sizes="(max-width:1000px) 60vw, 24vw"></div><figcaption class="mono">ispred bine</figcaption></figure>
-    </div>
-  </div>`;
-  const st = $('#utStage');
-  if (FORCE !== 'reduced' && matchMedia('(hover:hover) and (pointer:fine)').matches) {
-    let raf = 0, mx = 0, my = 0;
-    st.parentElement.addEventListener('pointermove', (e) => {
-      const r = st.getBoundingClientRect(); mx = ((e.clientX - r.left) / r.width - 0.5) * 2; my = ((e.clientY - r.top) / r.height - 0.5) * 2;
-      if (!raf) raf = requestAnimationFrame(() => { raf = 0; st.style.setProperty('--mx', mx.toFixed(3)); st.style.setProperty('--my', my.toFixed(3)); });
-    });
-  }
-}
-
 /* ======================= karte ======================= */
 function ticketHTML({ tag, big, rows, perks, cta, alt }) {
   return `<div class="tkt__wrap" data-reveal><article class="tkt${alt ? ' tkt--alt' : ''}">
@@ -427,7 +400,7 @@ function ticketHTML({ tag, big, rows, perks, cta, alt }) {
     <div class="tkt__stub"><div class="barcode" aria-hidden="true"></div>${cta}</div></article></div>`;
 }
 function renderTickets() {
-  const list = $('#tixList');
+  const list = $('#tixList'); if (!list) return;
   if (!C.tickets.length) {
     list.innerHTML = ticketHTML({
       tag: 'LOWLIFE / PARTYLIFE · Kragujevac', big: `Izdanje<br>${F.year}`,
@@ -450,7 +423,7 @@ function renderTickets() {
 /* ======================= follow / info / faq / footer ======================= */
 function renderMisc() {
   const s0 = C.socials[0], rest = C.socials.slice(1);
-  $('#socials').innerHTML = `<a class="badge" href="${s0.url}" target="_blank" rel="noopener" aria-label="Prati ${esc(s0.handle)} na ${esc(s0.label)}u (otvara se u novom tabu)">
+  if ($('#socials')) $('#socials').innerHTML = `<a class="badge" href="${s0.url}" target="_blank" rel="noopener" aria-label="Prati ${esc(s0.handle)} na ${esc(s0.label)}u (otvara se u novom tabu)">
       <svg class="badge__ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="bp" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#bp" textLength="500" lengthAdjust="spacing">PRATI NAJAVE ✦ PRATI NAJAVE ✦ LOWLIFE / PARTYLIFE ✦ </textPath></text></svg>
       <span class="badge__disc"><i aria-hidden="true">↗</i></span></a>
     <p class="badge__h mono">${esc(s0.handle)}</p>`
@@ -470,7 +443,7 @@ function renderMisc() {
     access: '<circle cx="12" cy="5" r="1.8"/><path d="M6 9h12M12 9v6M9 21l3-6 3 6"/>',
     mail: '<path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/>',
   };
-  $('#infoGrid').innerHTML = C.info.map((i) => `<article class="icard" data-reveal>
+  if ($('#infoGrid')) $('#infoGrid').innerHTML = C.info.map((i) => `<article class="icard" data-reveal>
     <svg viewBox="0 0 24 24" aria-hidden="true">${IC[i.icon] || ''}</svg>
     <span class="st ${i.confirmed ? 'st--ok' : 'st--soon'}">${i.confirmed ? 'Potvrđeno' : 'Uskoro'}</span>
     <h3>${esc(i.title)}</h3>
@@ -479,7 +452,7 @@ function renderMisc() {
     ${i.link ? `<a href="${i.link.url}" target="_blank" rel="noopener">${esc(i.link.label)} ↗</a>` : ''}
   </article>`).join('');
 
-  $('#faqList').innerHTML = C.faq.map((f, i) => `<div class="fq"><h4 style="margin:0;font:inherit"><button type="button" class="fq__q" id="fq${i}" aria-expanded="false" aria-controls="fa${i}">${esc(f.q)}</button></h4>
+  if ($('#faqList')) $('#faqList').innerHTML = C.faq.map((f, i) => `<div class="fq"><h4 style="margin:0;font:inherit"><button type="button" class="fq__q" id="fq${i}" aria-expanded="false" aria-controls="fa${i}">${esc(f.q)}</button></h4>
     <div class="fq__a" id="fa${i}" role="region" aria-labelledby="fq${i}"><div><p>${esc(f.a)}</p></div></div></div>`).join('');
   const qs = $$('.fq__q');
   qs.forEach((q, i) => {
@@ -531,26 +504,27 @@ document.addEventListener('click', (e) => {
 
 function navTriggers() {
   const secs = $$('[data-nav]');
-  const linkFor = { festival: '#festival', lineup: '#lineup', arhiva: '#lineup', galerija: '#galerija', info: '#info', karte: '#karte' };
+  const linkFor = { lineup: '#lineup', arhiva: '#lineup', karte: '#karte', klipovi: 'galerija.html', galerija: 'galerija.html', festival: 'festival.html', info: 'info.html' };
   secs.forEach((s) => ScrollTrigger.create({
     trigger: s, start: 'top 40px', end: 'bottom 40px',
     onToggle: (st) => {
       if (!st.isActive) return;
       nav.dataset.theme = s.dataset.nav;
-      $$('.nav__links a').forEach((a) => a.classList.toggle('is-cur', a.getAttribute('href') === linkFor[s.id]));
+      $$('.nav__links a').forEach((a) => a.classList.toggle('is-cur', a.getAttribute('href') === (s.dataset.cur || linkFor[s.id])));
     },
   }));
   ScrollTrigger.create({ start: 30, onToggle: (st) => nav.classList.toggle('is-solid', st.isActive) });
   // donja traka na mobilnom: posle hero-a, skrivena dok je na ekranu sopstveni CTA (karte / prati)
-  const dock = $('#dock'), hide = new Set(); let past = false;
+  const dock = $('#dock'); if (!dock) return;
+  const hide = new Set(); let past = false;
   const upd = () => { dock.hidden = false; requestAnimationFrame(() => dock.classList.toggle('is-on', past && !hide.size)); };
-  ScrollTrigger.create({ trigger: '#festival', start: 'top 85%', end: 'max', onToggle: (st) => { past = st.isActive; upd(); } });
+  ScrollTrigger.create({ trigger: '#lineup', start: 'top 85%', end: 'max', onToggle: (st) => { past = st.isActive; upd(); } });
   ['#karte', '#pratite'].forEach((sel) => ScrollTrigger.create({ trigger: sel, start: 'top 70%', end: 'bottom top', onToggle: (st) => { st.isActive ? hide.add(sel) : hide.delete(sel); upd(); } }));
 }
 
 /* ======================= hero ======================= */
 function fitTitle() {
-  const fit = $('#fit'), h = $('#heroTitle');
+  const fit = $('#fit'), h = $('#heroTitle'); if (!fit) return;
   fit.style.fontSize = '100px';
   const w = fit.getBoundingClientRect().width;
   const avail = h.clientWidth;
@@ -568,8 +542,9 @@ const Q_RM = FORCE === 'full' ? 'not all' : FORCE === 'reduced' ? 'all' : '(pref
 
 function heroMotion() {
   const mm = gsap.matchMedia();
-  const stage = $('#top'), photo = $('#heroPhoto'), inner = $('.stage__photo-in', photo), shade = $('#stageShade');
-  mm.add({ anim: Q_ANIM, rm: Q_RM, mobile: '(max-width: 760px)' }, (ctx) => {
+  const stage = $('.stage'), photo = $('#heroPhoto'), inner = photo && $('.stage__photo-in', photo), shade = $('#stageShade');
+  if (!stage && FORCE === 'reduced') root.classList.add('rm');
+  if (stage) mm.add({ anim: Q_ANIM, rm: Q_RM, mobile: '(max-width: 760px)' }, (ctx) => {
     const { anim, mobile } = ctx.conditions;
     if (!anim) {
       root.classList.add('rm'); stage.classList.add('is-static');
@@ -635,12 +610,6 @@ function heroMotion() {
       gsap.set(tiles, { y: 80, opacity: 0 });
       gsap.to(tiles, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power3.out', scrollTrigger: { trigger: '#l27Grid', start: 'top 88%', once: true } });
     }
-    const pols = $$('.pol');
-    if (pols.length) {
-      pols.forEach((p) => (p.style.transform = 'none'));
-      gsap.set(pols, { y: 150, opacity: 0 });
-      gsap.to(pols, { y: 0, opacity: 1, duration: 1, stagger: 0.14, ease: 'power3.out', scrollTrigger: { trigger: '.ut__stage', start: 'top 88%', once: true } });
-    }
     const badge = $('.badge');
     if (badge) {
       gsap.set(badge, { scale: 0.6, rotate: -40, opacity: 0 });
@@ -651,7 +620,7 @@ function heroMotion() {
         const v = [-70, 90, -40][i] || 0;
         gsap.fromTo(col, { y: -v }, { y: v, ease: 'none', scrollTrigger: { trigger: '#galCols', start: 'top bottom', end: 'bottom top', scrub: true } });
       });
-      gsap.fromTo('.l27__year', { xPercent: 10 }, { xPercent: -14, ease: 'none', scrollTrigger: { trigger: '#lineup', start: 'top bottom', end: 'bottom top', scrub: true } });
+      if ($('#lineup')) gsap.fromTo('.l27__year', { xPercent: 10 }, { xPercent: -14, ease: 'none', scrollTrigger: { trigger: '#lineup', start: 'top bottom', end: 'bottom top', scrub: true } });
       $$('[data-parallax]').forEach((el) => {
         const v = +el.dataset.parallax;
         gsap.fromTo(el, { y: -v }, { y: v, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
@@ -660,7 +629,7 @@ function heroMotion() {
         gsap.fromTo(el, { yPercent: -2.5 }, { yPercent: 2.5, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
       });
     }
-    return () => $$('[data-reveal],.mask>span,[data-parallax],.l27__li,.l27__year,.pol,.badge,.gal__col').forEach((e) => (e.style.cssText = ''));
+    return () => $$('[data-reveal],.mask>span,[data-parallax],.l27__li,.l27__year,.badge,.gal__col').forEach((e) => (e.style.cssText = ''));
   });
 }
 
@@ -686,7 +655,7 @@ function heroVideo() {
   v.addEventListener('playing', () => v.classList.add('is-on'), { once: true });
   let inView = true;
   const sync = () => { (inView && !document.hidden) ? v.play().catch(() => {}) : v.pause(); };
-  new IntersectionObserver((es) => { inView = es[0].isIntersecting; sync(); }, { threshold: 0 }).observe($('#top'));
+  new IntersectionObserver((es) => { inView = es[0].isIntersecting; sync(); }, { threshold: 0 }).observe($('.stage'));
   document.addEventListener('visibilitychange', sync);
   sync();
 }
@@ -702,20 +671,26 @@ function lifecycle() {
 function init() {
   applyState();
   renderEditions(); renderLineup27(); initCountdown();
-  renderList(); bindList(); applyFilter();
-  renderGallery(); bindLightbox(); bindVideoModal(); renderClips(); cursorChip();
-  renderAftermovie(); renderUtisci(); renderTickets(); renderMisc();
+  if (alist) { renderList(); bindList(); applyFilter(); }
+  if (galGrid) { renderGallery(); bindLightbox(); cursorChip(); }
+  if (vm) bindVideoModal();
+  renderClips();
+  renderAftermovie(); renderTickets(); renderMisc();
   paintScenes();
-  if (archive.length) setPreview(archive[0].id); else $('#arhiva').hidden = true;
-  fitTitle();
-  new ResizeObserver(() => fitTitle()).observe($('#heroTitle'));
+  if (alist) { if (archive.length) setPreview(archive[0].id); else $('#arhiva').hidden = true; }
+  if ($('#fit')) { fitTitle(); new ResizeObserver(() => fitTitle()).observe($('#heroTitle')); }
   footPulse(); lifecycle(); heroVideo();
   if (hasG) {
     heroMotion(); navTriggers();
     (document.fonts?.ready || Promise.resolve()).then(() => { fitTitle(); ScrollTrigger.refresh(); });
-    addEventListener('load', () => ScrollTrigger.refresh());
+    addEventListener('load', () => {
+      ScrollTrigger.refresh();
+      const hh = location.hash, t = hh.length > 1 && hh !== '#top' ? $(hh) : null;
+      const goHash = () => { ScrollTrigger.refresh(); scrollTo({ top: t.getBoundingClientRect().top + scrollY, behavior: 'instant' }); };
+      if (t) { goHash(); setTimeout(goHash, 400); }
+    });
   } else {
-    root.classList.add('rm'); $('#top').classList.add('is-static');
+    root.classList.add('rm'); $('.stage')?.classList.add('is-static');
     nav.classList.add('is-solid');
   }
 }

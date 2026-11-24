@@ -20,7 +20,6 @@ Animacije su uvek uključene (i kad OS traži smanjeno kretanje). `?motion=reduc
 | Raspored / satnice | `schedule[]` |
 | Galerija | `gallery[]` (`src`, `w`, `h`, `year`, `illustrative:false`) |
 | Aftermovie | `festivalConfig.aftermovie` |
-| Utisci publike | `testimonials[]` (samo odobreni) |
 | Info, FAQ, kanali, partneri | `info[]`, `faq[]`, `socials[]`, `partners[]` |
 | Boje / tipografija | `:root` u `css/style.css` — paleta #04010a · #1f0933 · #7c2cff · #00ffd5 · #f5f5ff |
 | Logo / favicon | `assets/logo.svg` (vektorizovan iz dostavljenog PNG-a), `assets/favicon.svg`, `apple-touch-icon.png` |

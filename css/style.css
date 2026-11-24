@@ -216,7 +216,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 @keyframes marq{to{transform:translateX(-50%)}}
 
 /* ---------- LINEUP 2027 ---------- */
-.lineup27 .giant{display:flex;flex-direction:column;align-items:flex-start;font-size:clamp(70px,20vw,380px)}
+.lineup27 .giant{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;gap:.22em;font-size:clamp(28px,8.4vw,170px)}
 .lineup27 .giant .o{color:transparent;-webkit-text-stroke:3px var(--lav)}
 .lineup27__row{display:flex;flex-wrap:wrap;gap:28px 60px;align-items:center;justify-content:space-between;margin-top:clamp(30px,5vw,70px);border-top:2px solid var(--lav);padding-top:28px}
 
@@ -280,7 +280,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .gal__item:focus-visible::after{transform:none}
 
 /* ---------- UTISCI ---------- */
-.utisci .wrap{display:grid;gap:30px}
 
 /* ---------- KARTE ---------- */
 .barcode{height:62px;width:100%;background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px,currentColor 6px 7px,transparent 7px 12px,currentColor 12px 16px,transparent 16px 18px);}
@@ -534,32 +533,6 @@ dialog::backdrop{background:var(--ink)}
 /* =====================================================================
    UTISCI: polaroidi + tražilo kamere
    ===================================================================== */
-.utisci{overflow:hidden}
-.ut{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,80px);align-items:center}
-.ut__copy .giant{font-size:clamp(64px,10.5vw,200px);display:block}
-.ut__copy .giant .o{color:transparent;-webkit-text-stroke:3px var(--lav)}
-.ut__copy .lead{margin-top:26px}
-.ut__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.ut__stage{position:relative;aspect-ratio:1/1.08;min-height:400px}
-.pol{position:absolute;width:56%;background:var(--lav);color:var(--ink);padding:10px 10px 40px;margin:0;
-  rotate:var(--r,0deg);translate:calc(var(--mx,0) * var(--d,10) * 1px) calc(var(--my,0) * var(--d,10) * 1px);transition:translate .3s var(--ease)}
-.pol__img{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--ink)}
-.pol figcaption{position:absolute;left:14px;bottom:12px;font:600 10px var(--mono);letter-spacing:.12em;text-transform:uppercase}
-.pol--1{left:0;top:0}
-.pol--2{right:0;top:18%;z-index:2}
-.pol--3{left:12%;bottom:0;z-index:3;width:50%}
-.vf{position:absolute;inset:22px 22px 52px 22px;pointer-events:none;z-index:4}
-.vf i{position:absolute;width:28px;height:28px;border:3px solid var(--mute)}
-.vf i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}
-.vf i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
-.vf i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}
-.vf i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
-.vf b{position:absolute;left:36px;top:2px;background:var(--ink);color:var(--mute);padding:5px 9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
-.quotes{display:grid;gap:clamp(16px,2vw,28px);margin-top:30px}
-.quote{background:var(--ink);color:var(--lav);padding:clamp(20px,3vw,40px);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
-.quote q{font:900 clamp(34px,5vw,84px)/.92 var(--display);text-transform:uppercase;quotes:"„" "“"}
-.quote cite{font-style:normal;font-weight:700}
-@media (max-width:1000px){.ut{grid-template-columns:1fr}.ut__stage{min-height:360px;max-width:520px;margin:10px auto 0;width:100%}}
 
 /* =====================================================================
    KARTE: tamna scena, konturni redovi, ulaznica koja se kida
@@ -634,3 +607,21 @@ dialog::backdrop{background:var(--ink)}
   .follow__bg .ring{left:50%;top:80%}
 }
 .rm .tix__row,.rm .tkt__main .scan,.rm .follow__bg .ring,.rm .badge__ring{animation:none}
+
+
+/* =====================================================================
+   PODSTRANICE (festival, galerija, info) + naslov lineupa u jednom redu
+   ===================================================================== */
+.pagehead{position:relative;background:var(--ink);color:var(--lav);padding:calc(var(--nav) + clamp(56px,9vw,150px)) 0 clamp(70px,10vw,160px);overflow:hidden}
+.pagehead__title{margin:14px 0 0;font:900 clamp(54px,13vw,250px)/.82 var(--display);text-transform:uppercase;letter-spacing:-.005em}
+.pagehead__title .y{color:var(--mute)}
+.pagehead__lead{max-width:34em;margin-top:clamp(22px,3vw,40px);color:var(--lav)}
+.pagehead__stats{display:flex;flex-wrap:wrap;gap:10px 34px;margin:26px 0 0;padding:0;list-style:none;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.pagehead__stats b{color:var(--mute);font:900 clamp(28px,3vw,44px)/1 var(--display);margin-right:8px;vertical-align:-.1em}
+.nav__links a[aria-current="page"]{color:var(--mute)}
+.gal__hero{position:relative;margin:0 0 clamp(28px,4vw,64px)}
+.gal__hero .frame{aspect-ratio:21/9;clip-path:polygon(0 0,100% 0,100% 100%,14% 100%,0 86%)}
+.gal__hero figcaption{position:absolute;right:0;bottom:0;background:var(--mute);color:var(--ink);padding:12px 18px 12px 22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;clip-path:polygon(14px 0,100% 0,100% 100%,0 100%)}
+@media (max-width:760px){.gal__hero .frame{aspect-ratio:4/3}}
+.clipsec{padding-top:clamp(80px,12vw,200px)}
+.clipsec .clips__head .y{color:var(--mute)}

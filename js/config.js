@@ -163,12 +163,6 @@ export const clips = [
 export const tickets = [];
 
 /* --------------------------------------------------------------------------
-   testimonials - samo odobrene izjave. Prazno = poziv „Tvoj LOWLIFE trenutak“.
-   { quote, author:'ime ili @username', year:2025, photo:null }
-   -------------------------------------------------------------------------- */
-export const testimonials = [];
-
-/* --------------------------------------------------------------------------
    info - praktične informacije; confirmed:false → „Detalji uskoro.“
    archive: činjenica iz prošlog izdanja, jasno označena.
    -------------------------------------------------------------------------- */
